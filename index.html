@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Acceso Multimedia</title>
+
+<style>
+
+body{
+
+margin:0;
+background:#0b132b;
+font-family:Arial;
+height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+}
+
+.login{
+
+background:white;
+padding:40px;
+border-radius:15px;
+width:320px;
+box-shadow:0 0 30px #00ffff44;
+
+}
+
+h2{
+
+text-align:center;
+
+}
+
+input{
+
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:20px;
+
+}
+
+button{
+
+width:100%;
+padding:12px;
+border:none;
+background:#0078ff;
+color:white;
+font-size:18px;
+cursor:pointer;
+
+}
+
+button:hover{
+
+background:#00a2ff;
+
+}
+
+#error{
+
+color:red;
+text-align:center;
+margin-top:10px;
+
+}
+
+#panel{
+
+display:none;
+
+text-align:center;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login" id="login">
+
+<h2>Acceso</h2>
+
+<input
+id="usuario"
+placeholder="Usuario">
+
+<input
+id="password"
+type="password"
+placeholder="Contraseña">
+
+<button onclick="login()">
+
+Ingresar
+
+</button>
+
+<div id="error"></div>
+
+</div>
+
+<div id="panel">
+
+<h1 style="color:white">
+
+Bienvenido
+
+</h1>
+
+<p style="color:white">
+
+Acceso correcto.
+
+</p>
+
+</div>
+
+<script>
+
+const URL_JSON="https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/usuarios.json";
+
+async function login(){
+
+let usuario=document.getElementById("usuario").value;
+
+let password=document.getElementById("password").value;
+
+let error=document.getElementById("error");
+
+error.innerHTML="";
+
+try{
+
+const r=await fetch(URL_JSON);
+
+const datos=await r.json();
+
+const ok=datos.usuarios.find(u=>
+
+u.usuario===usuario &&
+
+u.password===password
+
+);
+
+if(ok){
+
+document.getElementById("login").style.display="none";
+
+document.getElementById("panel").style.display="block";
+
+}else{
+
+error.innerHTML="Usuario o contraseña incorrectos";
+
+}
+
+}catch(e){
+
+error.innerHTML="No se pudo conectar con GitHub";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
