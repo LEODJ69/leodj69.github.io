@@ -1,14 +1,14 @@
 [
     {
         "usuario":"admin",
-        "password":"E70326098F"
+        "password":"pass"
     },
     {
         "usuario":"usuario",
-        "password":"12340"
+        "password":"passs"
     },
     {
         "usuario":"invitado",
-        "password":"00000"
+        "password":"passss"
     }
 ]
