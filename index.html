@@ -1,104 +1,838 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Seguro</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-box {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: center;
-        }
-        .login-box h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .textbox {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        .textbox label {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-        }
-        .textbox input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #5c67f2;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #4a54e1;
-        }
-        .mensaje-error {
-            color: red;
-            margin-top: 10px;
-            font-size: 14px;
-            display: none;
-        }
-    </style>
-</head>
-<body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="login-box">
-    <h2>Iniciar Sesión</h2>
-    <form onsubmit="verificarContrasena(event)">
-        <div class="textbox">
-            <label for="usuario">Usuario</label>
-            <input type="text" id="usuario" placeholder="Ingresa tu usuario" required>
-        </div>
-        <div class="textbox">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" placeholder="Ingresa tu contraseña" required>
-        </div>
-        <button type="submit">Ingresar</button>
-        <p id="error" class="mensaje-error">Usuario o contraseña incorrectos.</p>
-    </form>
+<title>FIFA 2026</title>
+<!-- ESTILO DE PAGINA NEON-->
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+
+background:linear-gradient(180deg,#050816,#081329,#050816);
+color:white;
+
+}
+
+header{
+
+padding:25px;
+text-align:center;
+font-size:35px;
+font-weight:bold;
+letter-spacing:2px;
+color:#00ffff;
+text-shadow:
+0 0 10px #00ffff,
+0 0 20px #00ffff,
+0 0 40px #00ffff;
+
+}
+
+.container{
+
+width:95%;
+max-width:1200px;
+margin:auto;
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;
+
+padding-bottom:50px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,.05);
+border-radius:20px;
+overflow:hidden;
+
+border:1px solid rgba(255,255,255,.1);
+
+backdrop-filter:blur(8px);
+
+box-shadow:
+0 0 20px rgba(0,255,255,.3);
+
+transition:.4s;
+
+}
+
+.card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:
+
+0 0 15px cyan,
+0 0 35px cyan,
+0 0 70px cyan;
+
+}
+
+.card img{
+
+width:100%;
+height:180px;
+object-fit:cover;
+
+}
+
+.boton{
+
+padding:18px;
+
+background:#0f172a;
+
+cursor:pointer;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:22px;
+font-weight:bold;
+
+color:#00ffff;
+
+text-shadow:0 0 10px cyan;
+
+}
+
+
+.boton{position:relative;transition:.35s;border:2px solid transparent;}
+.boton:hover{animation:rgbGlow 2s linear infinite;color:#fff;transform:scale(1.05);box-shadow:0 0 10px red,0 0 20px lime,0 0 30px cyan;}
+@keyframes rgbGlow{0%{border-color:#f00;text-shadow:0 0 10px #f00;}33%{border-color:#0f0;text-shadow:0 0 10px #0f0;}66%{border-color:#00f;text-shadow:0 0 10px #00f;}100%{border-color:#f00;text-shadow:0 0 10px #f00;}}
+
+.lista{
+
+display:none;
+
+background:#081321;
+
+}
+
+.lista a{
+
+display:block;
+
+padding:15px;
+
+text-decoration:none;
+
+color:white;
+
+border-top:1px solid rgba(255,255,255,.1);
+
+transition:.3s;
+
+}
+
+.lista a:hover{
+
+background:#00ffff;
+color:#000;
+
+font-weight:bold;
+
+}
+
+footer{
+
+padding:30px;
+text-align:center;
+color:#999;
+
+}
+
+@media(max-width:700px){
+
+header{
+
+font-size:28px;
+
+}
+
+.card img{
+
+height:160px;
+
+}
+
+}
+
+</style>
+<!-- ESTILO VISOR PLAYER NEON -->
+<style>
+
+.visor-overlay{
+
+display:none;
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.88);
+backdrop-filter:blur(8px);
+
+justify-content:center;
+align-items:center;
+
+z-index:99999;
+
+animation:fade .3s;
+
+}
+
+@keyframes fade{
+
+from{opacity:0;}
+to{opacity:1;}
+
+}
+
+.visor-contenido{
+
+width:96%;
+max-width:1500px;
+height:92%;
+
+background:#081321;
+
+border-radius:20px;
+
+overflow:hidden;
+
+position:relative;
+
+border:2px solid #00e5ff;
+
+box-shadow:
+
+0 0 15px #00ffff,
+0 0 35px #00ffff,
+0 0 70px #00ffff;
+
+}
+
+#playerFrame{
+
+width:100%;
+height:100%;
+border:none;
+
+}
+
+.cerrar{
+
+position:absolute;
+right:15px;
+top:15px;
+
+width:48px;
+height:48px;
+
+border:none;
+
+border-radius:50%;
+
+background:#ff003c;
+color:#fff;
+
+font-size:25px;
+
+cursor:pointer;
+
+box-shadow:0 0 15px red;
+
+z-index:100;
+
+transition:.3s;
+
+}
+
+.cerrar:hover{
+
+transform:scale(1.15);
+
+}
+header{
+    padding:25px;
+    text-align:center;
+    font-size:35px;
+    font-weight:bold;
+    letter-spacing:3px;
+    color:#fff;
+    text-transform:uppercase;
+
+    animation: rgbTitulo 4s linear infinite;
+
+    text-shadow:
+        0 0 8px currentColor,
+        0 0 18px currentColor,
+        0 0 35px currentColor,
+        0 0 60px currentColor;
+}
+
+@keyframes rgbTitulo{
+
+    0%{
+        color:#ff0000;
+    }
+
+    16%{
+        color:#ff8800;
+    }
+
+    33%{
+        color:#ffff00;
+    }
+
+    50%{
+        color:#00ff00;
+    }
+
+    66%{
+        color:#00ffff;
+    }
+
+    83%{
+        color:#0066ff;
+    }
+
+    100%{
+        color:#ff00ff;
+    }
+
+}
+</style>
+</head>
+
+<body>
+<div id="login" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(180deg,#020b1f,#061a3a,#020b1f);">
+<div style="background:rgba(5,15,40,.9);padding:30px;border-radius:20px;box-shadow:0 0 25px #00e5ff;border:1px solid #00e5ff;width:340px">
+<h2 style="text-align:center;color:#00e5ff;text-shadow:0 0 15px #00e5ff">Acceso</h2>
+<input id="usuario" value="" placeholder="Usuario" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
+<input id="password" value="" placeholder="Contraseña" type="password" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
+<button onclick="login()" style="width:100%;padding:12px;background:#00e5ff;color:#001;font-weight:bold">Ingresar</button>
+<p id="error" style="display:none;color:#ff6666">Usuario o contraseña incorrectos.</p></div></div>
+<div id="contenido" style="display:none;">
+
+<header>
+
+Mundial 2026
+
+</header>
+
+<div class="container">
+
+<!-- TARJETA 1 -->
+
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+  <img src="LOGOS/dsports.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
 </div>
 
+<div class="boton" onclick="abrir('DIRECTV')">
+
+DIRECTV
+
+</div>
+
+<div class="lista" id="DIRECTV">
+<!-- CODIGO PARA ABIR EN VISOR PLAYER <a href="#" onclick="abrirPlayer('https://la16hd.com/dsportsar.php');return false;">
+    DIRECTV OP1
+</a> -->
+<a href="#" onclick="abrirPlayer('https://la16hd.com/dsportsar.php');return false;">
+    DIRECTV OP1
+</a>
+<a href="#" onclick="abrirPlayer('https://esvidzypro.sbs/dsportsar.php');return false;">
+    DIRECTV OP2
+</a>
+<a href="#" onclick="abrirPlayer('https://sudamericaplay.sbs/canal_8112/cza_dsports.html');return false;">
+    DIRECTV OP3
+</a>
+<a href="#" onclick="abrirPlayer('https://streamtp.sbs/global2.php?stream=dsports');return false;">
+    DIRECTV OP4
+</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/canales.php?stream=dsports');return false;">
+    DIRECTV OP5
+</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/online/canales.php?stream=dsports');return false;">
+    DIRECTV OP6
+</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/vivo/canales.php?stream=dsports');return false;">
+    DIRECTV OP7
+</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/directvsports.php');return false;">
+    DIRECTV OP8
+</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/directvsportshd.php');return false;">
+    DIRECTV OP9
+</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/dsports-sharecast.php');return false;">
+    DIRECTV OP10
+</a>
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=dsports');return false;">
+    DIRECTV OP11
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=dsports2');return false;">
+    DIRECTV OP12
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=dsportsplus');return false;">
+    DIRECTV OP13
+</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/canales.php?stream=goltv');return false;">
+    DIRECTV OP14
+</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/vivo/canales.php?stream=vtvplus');return false;">
+    DIRECTV OP15
+</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/atv.php');return false;">
+    DIRECTV OP16
+</a>
+</div>
+
+</div>
+
+<!-- TARJETA 2 -->
+
+<div class="card">
+
+<div style="display: flex; justify-content: center; width: 100%;">
+  <img src="LOGOS/espn.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+</div>
+<div class="boton" onclick="abrir('ESPN')">
+
+ESPN
+
+</div>
+
+<div class="lista" id="ESPN">
+
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=espnco');return false;">
+    ESPN OP1
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espnar');return false;">
+    ESPN OP2
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espn4ar');return false;">
+    ESPN OP3
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espnpremium');return false;">
+    ESPN OP4
+</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/espnhd.php');return false;">
+    ESPN OP5
+</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/espn-sharecast.php');return false;">
+    ESPN OP6
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espndeportes');return false;">
+    ESPN OP7
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espnmx');return false;">
+    ESPN OP8
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espn2mx');return false;">
+    ESPN OP9
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espn3mx');return false;">
+    ESPN OP10
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espn4mx');return false;">
+    ESPN OP11
+</a>
+
+</div>
+
+</div>
+
+<!-- TARJETA 3 -->
+
+<div class="card">
+
+<div style="display: flex; justify-content: center; width: 100%;">
+  <img src="LOGOS/tyc_sports.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+</div>
+<div class="boton" onclick="abrir('TYC SPORTS')">
+
+TYC SPORTS
+
+</div>
+
+<div class="lista" id="TYC SPORTS">
+
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/tycsports-sd.php');return false;">
+TYC SPORTS OP1
+</a>
+
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/tntsports.php');return false;">
+TYC SPORTS OP2
+</a>
+
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=tycsports');return false;">
+TYC SPORTS OP3
+</a>
+<a href="#" onclick="abrirPlayer('https://streamtp.sbs/global1.php?stream=tycsports');return false;">
+TYC SPORTS OP4
+</a>
+
+</div>
+
+</div>
+
+<!-- TARJETA 4 -->
+
+<div class="card">
+
+<div style="display: flex; justify-content: center; width: 100%;">
+  <img src="LOGOS/tudn.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+</div>
+
+<div class="boton" onclick="abrir('TUDN')">
+
+TUDN
+
+</div>
+
+<div class="lista" id="TUDN">
+
+<a href="#" onclick="abrirPlayer('https://esvidzypro.sbs/tudnmx.php');return false;">
+TUDN OP1
+</a>
+
+<a href="#" onclick="abrirPlayer('https://esvidzypro.sbs/vix.php');return false;">
+TUDN OP2
+</a>
+
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=tudnmx');return false;">
+TUDN OP3
+</a>
+
+</div>
+
+</div>
+<!-- TARJETA 5 -->
+
+<div class="card">
+
+<div style="display: flex; justify-content: center; width: 100%;">
+  <img src="LOGOS/tnt.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+</div>
+
+<div class="boton" onclick="abrir('TNT SPORTS')">
+
+TNT SPORTS
+
+</div>
+
+<div class="lista" id="TNT SPORTS">
+
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/cdf.php');return false;">
+TNT SPORTS OP1
+</a>
+
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=tntsports');return false;">
+TNT SPORTS OP2
+</a>
+
+</div>
+
+</div>
+
+<!-- TARJETA 6 -->
+
+<div class="card">
+
+<div style="display: flex; justify-content: center; width: 100%;">
+  <img src="LOGOS/sporttv.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+</div>
+
+<div class="boton" onclick="abrir('deportes')">
+
+SPORTTV
+
+</div>
+
+<div class="lista" id="deportes">
+
+<a href="#" onclick="abrirPlayer('https://esvidzypro.sbs/sportv1.php');return false;">
+SPORTTV OP1
+</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/tv/canales.php?stream=sportv');return false;">
+SPORTTV OP2
+</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/online/canal.php?stream=sportv');return false;">
+SPORTTV OP3
+</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/vivo/canales.php?stream=sportv');return false;">
+SPORTTV OP4
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=sporttvbr1');return false;">
+SPORTTV OP5
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=sporttvbr2');return false;">
+SPORTTV OP6
+</a>
+
+</div>
+
+</div>
+<!-- TARJETA 7 -->
+
+<div class="card">
+
+<div style="display: flex; justify-content: center; width: 100%;">
+  <img src="LOGOS/sport-tv.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+</div>
+
+<div class="boton" onclick="abrir('SPORT-TV')">
+
+SPORT-TV
+
+</div>
+
+<div class="lista" id="SPORT-TV">
+
+<a href="#" onclick="abrirPlayer('https://sportzonline.click/channels/pt/sporttv1.php');return false;">
+SPORT-TV OP1
+</a>
+<a href="#" onclick="abrirPlayer('https://sportzonline.click/channels/pt/sporttv2.php');return false;">
+SPORT-TV OP2
+</a>
+<a href="#" onclick="abrirPlayer('https://sportzonline.click/channels/pt/sporttv3.php');return false;">
+SPORT-TV OP3
+</a>
+<a href="#" onclick="abrirPlayer('https://sportzonline.click/channels/pt/sporttv4.php');return false;">
+SPORT-TV OP4
+</a>
+<a href="#" onclick="abrirPlayer('https://sportzonline.click/channels/pt/sporttv5.php');return false;">
+SPORT-TV OP5
+</a>
+<a href="#" onclick="abrirPlayer('https://w4.sportsonlline.click/channels/pt/sporttv5.php');return false;">
+SPORT-TV OP6
+</a>
+
+</div>
+
+</div>
+<!-- TARJETA 8 -->
+
+<div class="card">
+
+<div style="display: flex; justify-content: center; width: 100%;">
+  <img src="LOGOS/telemundo.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+</div>
+
+<div class="boton" onclick="abrir('TELEMUNDO')">
+
+TELEMUNDO
+
+</div>
+
+<div class="lista" id="TELEMUNDO">
+
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=telemundo');return false;">
+TELEMUNDO OP1
+</a>
+<a href="#" onclick="abrirPlayer('https://streamtp.sbs/global2.php?stream=telemundousa');return false;">
+TELEMUNDO OP2
+</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/tv/canales.php?stream=telemundo');return false;">
+TELEMUNDO OP3
+</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/online/canal.php?stream=telemundo');return false;">
+TELEMUNDO OP4
+</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/canales.php?stream=telemundo');return false;">
+TELEMUNDO OP5
+</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/online/canales.php?stream=telemundo');return false;">
+TELEMUNDO OP6
+</a>
+<a href="#" onclick="abrirPlayer('https://la20hd.com/vivo/canal.php?stream=telemundo');return false;">
+TELEMUNDO OP7
+</a>
+</div>
+
+</div>
+<!-- TARJETA 9 -->
+
+<div class="card">
+
+<div style="display: flex; justify-content: center; width: 100%;">
+  <img src="LOGOS/fifa.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+</div>
+
+<div class="boton" onclick="abrir('MAS CANALES')">
+
+MAS CANALES
+
+</div>
+
+<div class="lista" id="MAS CANALES">
+
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/espn4.php');return false;">
+AMERICA TV
+</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/america.php');return false;">
+AMERICA TV OP2
+</a>
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=americatv');return false;">
+AMERICA TV OP3
+</a>
+<a href="#" onclick="abrirPlayer('https://esvidzy99.co/caracoltv.php');return false;">
+CARACOL TV
+</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/caracol.php');return false;">
+CARACOL TV OP2
+</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/tv/canales.php?stream=caracol');return false;">
+CARACOL TV OP3
+</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/canales.php?stream=caracol');return false;">
+CARACOL TV OP4
+</a>
+<a href="#" onclick="abrirPlayer('https://esvidzypro.sbs/canal5mx.php');return false;">
+CANAL5
+</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=canal5mx');return false;">
+CANAL5 OP2
+</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/online/canal.php?stream=canal5');return false;">
+CANAL5 OP3
+</a>
+<a href="#" onclick="abrirPlayer('https://tvhd1.com/canales/canal5.php');return false;">
+CANAL5 OP4
+</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/canales.php?stream=canal5');return false;">
+CANAL5 OP5
+</a>
+<a href="#" onclick="abrirPlayer('https://la16hd.com/canal5mx.php');return false;">
+CANAL5 OP6
+</a>
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=chilevision');return false;">
+CHILEVISION
+</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/ecfutbol.php');return false;">
+CHILEVISION OP2
+</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/chilevision.php');return false;">
+CHILEVISION OP3
+</a>
+</div>
+
+</div>
+</div>
+
+<footer>
+
+© TVDeporte
+
+</footer>
+<div id="visorPlayer" class="visor-overlay">
+
+    <div class="visor-contenido">
+
+        <button class="cerrar" onclick="cerrarPlayer()">✕</button>
+
+        <iframe
+            id="playerFrame"
+            src=""
+            allowfullscreen
+            allow="encrypted-media"
+            scrolling="no">
+        </iframe>
+
+    </div>
+
+</div>
 <script>
-    function verificarContrasena(event) {
-        event.preventDefault(); // Evita que la página se recargue por defecto
 
-        const user = document.getElementById('usuario').value;
-        const pass = document.getElementById('password').value;
-        
-        // Cambia 'admin' y 'secreto' por tu usuario y contraseña deseados
-        if (user === 'admin' && pass === 'secreto') {
-            alert('¡Acceso concedido!');
-            // Aquí puedes redirigir a otra página usando:  
-			window.location.href = "https://luisefrainorlando.wixsite.com/deportetv";
-			
-        } else {
-            document.getElementById('error').style.display = 'block';
-        }
-    }
+
+function abrir(id){
+
+var lista=document.getElementById(id);
+
+if(lista.style.display==="block"){
+
+lista.style.display="none";
+
+}else{
+
+document.querySelectorAll(".lista").forEach(function(e){
+
+e.style.display="none";
+
+});
+
+lista.style.display="block";
+
+}
+
+}
+
 </script>
+<!-- script visor player -->
+<script>
 
-</body>
+function abrirPlayer(url){
+
+const frame=document.getElementById("playerFrame");
+
+frame.src=url;
+
+document.getElementById("visorPlayer").style.display="flex";
+
+document.body.style.overflow="hidden";
+
+}
+
+function cerrarPlayer(){
+
+const frame=document.getElementById("playerFrame");
+
+frame.src="";
+
+document.getElementById("visorPlayer").style.display="none";
+
+document.body.style.overflow="auto";
+
+}
+
+window.addEventListener("keydown",function(e){
+
+if(e.key==="Escape"){
+
+cerrarPlayer();
+
+}
+
+});
+
+document.getElementById("visorPlayer").addEventListener("click",function(e){
+
+if(e.target===this){
+
+cerrarPlayer();
+
+}
+
+});
+
+</script>
+</div><script>const USUARIO='user';const PASSWORD='0510';function login(){if(usuario.value===USUARIO&&password.value===PASSWORD){login.style;document.getElementById('login').style.display='none';document.getElementById('contenido').style.display='block';}else error.style.display='block';}</script></body>
 </html>
