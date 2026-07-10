@@ -111,7 +111,7 @@ text-shadow:0 0 10px cyan;
 
 
 .boton{position:relative;transition:.35s;border:2px solid transparent;}
-.boton:hover{animation:rgbGlow 2s linear infinite;color:#fff;transform:scale(1.05);box-shadow:0 0 10px red,0 0 20px lime,0 0 30px cyan;}
+.boton:hover{color:#fff;transform:scale(1.05);border-color:#00e5ff;box-shadow:0 0 12px #00e5ff,0 0 24px #00e5ff;}
 @keyframes rgbGlow{0%{border-color:#f00;text-shadow:0 0 10px #f00;}33%{border-color:#0f0;text-shadow:0 0 10px #0f0;}66%{border-color:#00f;text-shadow:0 0 10px #00f;}100%{border-color:#f00;text-shadow:0 0 10px #f00;}}
 
 .lista{
@@ -274,10 +274,8 @@ header{
     font-size:35px;
     font-weight:bold;
     letter-spacing:3px;
-    color:#fff;
+    color:#00e5ff;
     text-transform:uppercase;
-
-    animation: rgbTitulo 4s linear infinite;
 
     text-shadow:
         0 0 8px currentColor,
@@ -286,37 +284,6 @@ header{
         0 0 60px currentColor;
 }
 
-@keyframes rgbTitulo{
-
-    0%{
-        color:#ff0000;
-    }
-
-    16%{
-        color:#ff8800;
-    }
-
-    33%{
-        color:#ffff00;
-    }
-
-    50%{
-        color:#00ff00;
-    }
-
-    66%{
-        color:#00ffff;
-    }
-
-    83%{
-        color:#0066ff;
-    }
-
-    100%{
-        color:#ff00ff;
-    }
-
-}
 </style>
 </head>
 
