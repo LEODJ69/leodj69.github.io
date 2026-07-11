@@ -273,34 +273,41 @@ header{
         0 0 35px currentColor,
         0 0 60px currentColor;
 }
-
 /*=========================
-AGENDA SEMANAL
+AGENDA SEMANAL RESPONSIVE
 ==========================*/
 
 .agenda{
-    width:500px;
-    margin:8px auto;
-    font-family:Arial,sans-serif;
+    width:100%;
+    max-width:500px;
+    margin:12px auto;
+    padding:0 10px;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 .agenda summary{
-    list-style:none;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    min-height:42px;
     cursor:pointer;
     text-align:center;
-    padding:2px;
-    border-radius:8px;
+    padding:10px 15px;
+    border-radius:10px;
     color:#00ffff;
     background:#081321;
     border:1px solid #00ffff;
     font-weight:bold;
-    font-size:14px;
-    box-shadow:0 0 10px #00ffff;
+    font-size:15px;
+    box-shadow:0 0 10px rgba(0,255,255,.5);
     transition:.3s;
+    box-sizing:border-box;
 }
 
 .agenda summary:hover{
-    background:#3d85c6;
+    background:#0f4c75;
 }
 
 .agenda summary::-webkit-details-marker{
@@ -308,17 +315,21 @@ AGENDA SEMANAL
 }
 
 .agenda-contenido{
-    margin-top:6px;
+    width:100%;
+    margin-top:8px;
     background:#111;
-    border-radius:8px;
-    padding:2px;
+    border:1px solid #00ffff55;
+    border-radius:10px;
+    padding:8px;
+    box-sizing:border-box;
 }
 
 .partido{
-    color:white;
-    font-size:13px;
-    padding:2px;
-    border-bottom:1px solid #333;
+    color:#fff;
+    font-size:14px;
+    padding:8px 5px;
+    border-bottom:1px solid #2c2c2c;
+    line-height:1.5;
 }
 
 .partido:last-child{
@@ -328,6 +339,37 @@ AGENDA SEMANAL
 .partido span{
     color:#00ffff;
     font-weight:bold;
+}
+
+/* ===== MÓVILES ===== */
+
+@media (max-width:768px){
+
+    .agenda{
+        max-width:100%;
+        padding:0 8px;
+    }
+
+    .agenda summary{
+        font-size:14px;
+        padding:10px;
+    }
+
+    .partido{
+        font-size:13px;
+        padding:7px 4px;
+    }
+
+}
+
+/* ===== PANTALLAS GRANDES ===== */
+
+@media (min-width:1200px){
+
+    .agenda{
+        max-width:560px;
+    }
+
 }
 </style>
 </head>
