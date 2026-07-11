@@ -274,6 +274,61 @@ header{
         0 0 60px currentColor;
 }
 
+/*=========================
+AGENDA SEMANAL
+==========================*/
+
+.agenda{
+    width:500px;
+    margin:8px auto;
+    font-family:Arial,sans-serif;
+}
+
+.agenda summary{
+    list-style:none;
+    cursor:pointer;
+    text-align:center;
+    padding:2px;
+    border-radius:8px;
+    color:#00ffff;
+    background:#081321;
+    border:1px solid #00ffff;
+    font-weight:bold;
+    font-size:14px;
+    box-shadow:0 0 10px #00ffff;
+    transition:.3s;
+}
+
+.agenda summary:hover{
+    background:#3d85c6;
+}
+
+.agenda summary::-webkit-details-marker{
+    display:none;
+}
+
+.agenda-contenido{
+    margin-top:6px;
+    background:#111;
+    border-radius:8px;
+    padding:2px;
+}
+
+.partido{
+    color:white;
+    font-size:13px;
+    padding:2px;
+    border-bottom:1px solid #333;
+}
+
+.partido:last-child{
+    border-bottom:none;
+}
+
+.partido span{
+    color:#00ffff;
+    font-weight:bold;
+}
 </style>
 </head>
 
@@ -290,7 +345,31 @@ header{
 <header>
 
 Mundial 2026
+<div class="container">
+<!-- INICIO AGENDA SEMANAL -->
+<details class="agenda">
+    <summary>📅 Agenda Semanal</summary>
 
+    <div class="agenda-contenido">
+
+        <div class="partido">
+            <span>Sabado 11</span><br>
+            17:00 | Noruega vs Inglaterra
+        </div>
+
+        <div class="partido">
+            <span>Sabado 11</span><br>
+            21:00 | Argentina vs Suiza
+        </div>
+
+        <div class="partido">
+            <span>Martes 14</span><br>
+            15:00 | Francia vs España
+        </div>
+
+    </div>
+</details>
+<!-- FIN AGENDA SEMANAL -->
 </header>
 
 <div class="container">
