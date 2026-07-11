@@ -164,7 +164,88 @@ height:160px;
 }
 
 }
+/*=========================
+AGENDA SEMANAL - LIGERA
+=========================*/
 
+.agenda{
+    width:100%;
+    max-width:500px;
+    margin:10px auto;
+    padding:0 8px;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.agenda summary{
+    width:100%;
+    display:block;
+    text-align:center;
+    padding:10px;
+    color:#00d8ff;
+    background:#0b1622;
+    border:1px solid #00bcd4;
+    border-radius:6px;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+    user-select:none;
+    box-sizing:border-box;
+}
+
+.agenda summary:hover{
+    background:#12314a;
+}
+
+.agenda summary::-webkit-details-marker{
+    display:none;
+}
+
+.agenda-contenido{
+    margin-top:6px;
+    padding:6px;
+    background:#161616;
+    border:1px solid #2b2b2b;
+    border-radius:6px;
+    box-sizing:border-box;
+}
+
+.partido{
+    padding:7px 4px;
+    color:#ffffff;
+    font-size:13px;
+    border-bottom:1px solid #2b2b2b;
+    line-height:1.4;
+}
+
+.partido:last-child{
+    border-bottom:none;
+}
+
+.partido span{
+    color:#00d8ff;
+    font-weight:bold;
+}
+
+/* Tablets y móviles */
+
+@media (max-width:768px){
+
+    .agenda{
+        max-width:100%;
+        padding:0 6px;
+    }
+
+    .agenda summary{
+        font-size:13px;
+        padding:9px;
+    }
+
+    .partido{
+        font-size:12px;
+    }
+
+}
 </style>
 <!-- ESTILO VISOR PLAYER NEON -->
 <style>
@@ -273,88 +354,6 @@ header{
         0 0 35px currentColor,
         0 0 60px currentColor;
 }
-/*=========================
-AGENDA SEMANAL - LIGERA
-=========================*/
-
-.agenda{
-    width:100%;
-    max-width:500px;
-    margin:10px auto;
-    padding:0 8px;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
-}
-
-.agenda summary{
-    width:100%;
-    display:block;
-    text-align:center;
-    padding:10px;
-    color:#00d8ff;
-    background:#0b1622;
-    border:1px solid #00bcd4;
-    border-radius:6px;
-    font-size:14px;
-    font-weight:bold;
-    cursor:pointer;
-    user-select:none;
-    box-sizing:border-box;
-}
-
-.agenda summary:hover{
-    background:#12314a;
-}
-
-.agenda summary::-webkit-details-marker{
-    display:none;
-}
-
-.agenda-contenido{
-    margin-top:6px;
-    padding:6px;
-    background:#161616;
-    border:1px solid #2b2b2b;
-    border-radius:6px;
-    box-sizing:border-box;
-}
-
-.partido{
-    padding:7px 4px;
-    color:#ffffff;
-    font-size:13px;
-    border-bottom:1px solid #2b2b2b;
-    line-height:1.4;
-}
-
-.partido:last-child{
-    border-bottom:none;
-}
-
-.partido span{
-    color:#00d8ff;
-    font-weight:bold;
-}
-
-/* Tablets y móviles */
-
-@media (max-width:768px){
-
-    .agenda{
-        max-width:100%;
-        padding:0 6px;
-    }
-
-    .agenda summary{
-        font-size:13px;
-        padding:9px;
-    }
-
-    .partido{
-        font-size:12px;
-    }
-
-}
 </style>
 </head>
 
@@ -363,7 +362,7 @@ AGENDA SEMANAL - LIGERA
 <div style="background:rgba(5,15,40,.9);padding:30px;border-radius:20px;box-shadow:0 0 25px #00e5ff;border:1px solid #00e5ff;width:340px">
 <h2 style="text-align:center;color:#00e5ff;text-shadow:0 0 15px #00e5ff">Acceso</h2>
 <input id="usuario" value="" placeholder="Usuario" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
-<input id="password" value="" placeholder="Contrase帽a" type="password" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
+<input id="password" value="" placeholder="Contraseña" type="password" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
 <button onclick="login()" style="width:100%;padding:12px;background:#00e5ff;color:#001;font-weight:bold">Ingresar</button>
 <p id="error" style="display:none;color:#ff6666">Usuario o contraseña incorrectos.</p></div></div>
 <div id="contenido" style="display:none;">
@@ -802,7 +801,7 @@ CHILEVISION OP3
 
 <footer>
 
-© TVDeporte
+? TVDeporte
 
 </footer>
 <div id="visorPlayer" class="visor-overlay">
