@@ -274,40 +274,36 @@ header{
         0 0 60px currentColor;
 }
 /*=========================
-AGENDA SEMANAL RESPONSIVE
-==========================*/
+AGENDA SEMANAL - LIGERA
+=========================*/
 
 .agenda{
     width:100%;
     max-width:500px;
-    margin:12px auto;
-    padding:0 10px;
+    margin:10px auto;
+    padding:0 8px;
     box-sizing:border-box;
     font-family:Arial, Helvetica, sans-serif;
 }
 
 .agenda summary{
-    display:flex;
-    justify-content:center;
-    align-items:center;
     width:100%;
-    min-height:42px;
-    cursor:pointer;
+    display:block;
     text-align:center;
-    padding:10px 15px;
-    border-radius:10px;
-    color:#00ffff;
-    background:#081321;
-    border:1px solid #00ffff;
+    padding:10px;
+    color:#00d8ff;
+    background:#0b1622;
+    border:1px solid #00bcd4;
+    border-radius:6px;
+    font-size:14px;
     font-weight:bold;
-    font-size:15px;
-    box-shadow:0 0 10px rgba(0,255,255,.5);
-    transition:.3s;
+    cursor:pointer;
+    user-select:none;
     box-sizing:border-box;
 }
 
 .agenda summary:hover{
-    background:#0f4c75;
+    background:#12314a;
 }
 
 .agenda summary::-webkit-details-marker{
@@ -315,21 +311,20 @@ AGENDA SEMANAL RESPONSIVE
 }
 
 .agenda-contenido{
-    width:100%;
-    margin-top:8px;
-    background:#111;
-    border:1px solid #00ffff55;
-    border-radius:10px;
-    padding:8px;
+    margin-top:6px;
+    padding:6px;
+    background:#161616;
+    border:1px solid #2b2b2b;
+    border-radius:6px;
     box-sizing:border-box;
 }
 
 .partido{
-    color:#fff;
-    font-size:14px;
-    padding:8px 5px;
-    border-bottom:1px solid #2c2c2c;
-    line-height:1.5;
+    padding:7px 4px;
+    color:#ffffff;
+    font-size:13px;
+    border-bottom:1px solid #2b2b2b;
+    line-height:1.4;
 }
 
 .partido:last-child{
@@ -337,37 +332,26 @@ AGENDA SEMANAL RESPONSIVE
 }
 
 .partido span{
-    color:#00ffff;
+    color:#00d8ff;
     font-weight:bold;
 }
 
-/* ===== MÓVILES ===== */
+/* Tablets y m贸viles */
 
 @media (max-width:768px){
 
     .agenda{
         max-width:100%;
-        padding:0 8px;
+        padding:0 6px;
     }
 
     .agenda summary{
-        font-size:14px;
-        padding:10px;
+        font-size:13px;
+        padding:9px;
     }
 
     .partido{
-        font-size:13px;
-        padding:7px 4px;
-    }
-
-}
-
-/* ===== PANTALLAS GRANDES ===== */
-
-@media (min-width:1200px){
-
-    .agenda{
-        max-width:560px;
+        font-size:12px;
     }
 
 }
@@ -379,9 +363,9 @@ AGENDA SEMANAL RESPONSIVE
 <div style="background:rgba(5,15,40,.9);padding:30px;border-radius:20px;box-shadow:0 0 25px #00e5ff;border:1px solid #00e5ff;width:340px">
 <h2 style="text-align:center;color:#00e5ff;text-shadow:0 0 15px #00e5ff">Acceso</h2>
 <input id="usuario" value="" placeholder="Usuario" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
-<input id="password" value="" placeholder="Contraseña" type="password" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
+<input id="password" value="" placeholder="Contrase帽a" type="password" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
 <button onclick="login()" style="width:100%;padding:12px;background:#00e5ff;color:#001;font-weight:bold">Ingresar</button>
-<p id="error" style="display:none;color:#ff6666">Usuario o contraseña incorrectos.</p></div></div>
+<p id="error" style="display:none;color:#ff6666">Usuario o contrase帽a incorrectos.</p></div></div>
 <div id="contenido" style="display:none;">
 
 <header>
@@ -390,7 +374,7 @@ Mundial 2026
 <div class="container">
 <!-- INICIO AGENDA SEMANAL -->
 <details class="agenda">
-    <summary>📅 Agenda Semanal</summary>
+    <summary>馃搮 Agenda Semanal</summary>
 
     <div class="agenda-contenido">
 
@@ -406,7 +390,7 @@ Mundial 2026
 
         <div class="partido">
             <span>Martes 14</span><br>
-            15:00 | Francia vs España
+            15:00 | Francia vs Espa帽a
         </div>
 
     </div>
@@ -420,7 +404,7 @@ Mundial 2026
 
 <div class="card">
 <div style="display: flex; justify-content: center; width: 100%;">
-  <img src="LOGOS/dsports.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+  <img src="LOGOS/dsports.png" alt="Descripci贸n de la imagen" style="width: auto; height: 150px; object-fit: cover;">
 </div>
 
 <div class="boton" onclick="abrir('DIRECTV')">
@@ -490,7 +474,7 @@ DIRECTV
 <div class="card">
 
 <div style="display: flex; justify-content: center; width: 100%;">
-  <img src="LOGOS/espn.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+  <img src="LOGOS/espn.png" alt="Descripci贸n de la imagen" style="width: auto; height: 150px; object-fit: cover;">
 </div>
 <div class="boton" onclick="abrir('ESPN')">
 
@@ -543,7 +527,7 @@ ESPN
 <div class="card">
 
 <div style="display: flex; justify-content: center; width: 100%;">
-  <img src="LOGOS/tyc_sports.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+  <img src="LOGOS/tyc_sports.png" alt="Descripci贸n de la imagen" style="width: auto; height: 150px; object-fit: cover;">
 </div>
 <div class="boton" onclick="abrir('TYC SPORTS')">
 
@@ -577,7 +561,7 @@ TYC SPORTS OP4
 <div class="card">
 
 <div style="display: flex; justify-content: center; width: 100%;">
-  <img src="LOGOS/tudn.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+  <img src="LOGOS/tudn.png" alt="Descripci贸n de la imagen" style="width: auto; height: 150px; object-fit: cover;">
 </div>
 
 <div class="boton" onclick="abrir('TUDN')">
@@ -608,7 +592,7 @@ TUDN OP3
 <div class="card">
 
 <div style="display: flex; justify-content: center; width: 100%;">
-  <img src="LOGOS/tnt.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+  <img src="LOGOS/tnt.png" alt="Descripci贸n de la imagen" style="width: auto; height: 150px; object-fit: cover;">
 </div>
 
 <div class="boton" onclick="abrir('TNT SPORTS')">
@@ -636,7 +620,7 @@ TNT SPORTS OP2
 <div class="card">
 
 <div style="display: flex; justify-content: center; width: 100%;">
-  <img src="LOGOS/sporttv.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+  <img src="LOGOS/sporttv.png" alt="Descripci贸n de la imagen" style="width: auto; height: 150px; object-fit: cover;">
 </div>
 
 <div class="boton" onclick="abrir('deportes')">
@@ -674,7 +658,7 @@ SPORTTV OP6
 <div class="card">
 
 <div style="display: flex; justify-content: center; width: 100%;">
-  <img src="LOGOS/sport-tv.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+  <img src="LOGOS/sport-tv.png" alt="Descripci贸n de la imagen" style="width: auto; height: 150px; object-fit: cover;">
 </div>
 
 <div class="boton" onclick="abrir('SPORT-TV')">
@@ -712,7 +696,7 @@ SPORT-TV OP6
 <div class="card">
 
 <div style="display: flex; justify-content: center; width: 100%;">
-  <img src="LOGOS/telemundo.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+  <img src="LOGOS/telemundo.png" alt="Descripci贸n de la imagen" style="width: auto; height: 150px; object-fit: cover;">
 </div>
 
 <div class="boton" onclick="abrir('TELEMUNDO')">
@@ -752,7 +736,7 @@ TELEMUNDO OP7
 <div class="card">
 
 <div style="display: flex; justify-content: center; width: 100%;">
-  <img src="LOGOS/fifa.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;">
+  <img src="LOGOS/fifa.png" alt="Descripci贸n de la imagen" style="width: auto; height: 150px; object-fit: cover;">
 </div>
 
 <div class="boton" onclick="abrir('MAS CANALES')">
@@ -818,14 +802,14 @@ CHILEVISION OP3
 
 <footer>
 
-© TVDeporte
+漏 TVDeporte
 
 </footer>
 <div id="visorPlayer" class="visor-overlay">
 
     <div class="visor-contenido">
 
-        <button class="cerrar" onclick="cerrarPlayer()">✕</button>
+        <button class="cerrar" onclick="cerrarPlayer()">鉁?/button>
 
         <iframe
             id="playerFrame"
