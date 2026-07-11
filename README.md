@@ -1,2 +1,2 @@
-VERSIÓN 1.2
-modifi 11-07-26
+VERSIÓN 1.0
+modifi 11-07-26 01:58
