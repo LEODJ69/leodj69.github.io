@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neon IPTV</title><script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<style>
+body{margin:0;background:#08111f;color:#fff;font-family:Arial}
+.wrap{display:flex;height:100vh}
+.left{flex:1;padding:10px}.right{width:320px;display:flex;flex-direction:column;background:#0b1830;border-left:1px solid #0ff3}
+video{width:100%;height:calc(100vh - 20px);background:#000;border:2px solid #1ee7ff;border-radius:10px;box-shadow:0 0 15px #00cfff55}
+input,select{margin:8px;padding:10px;background:#112;color:#fff;border:1px solid #1ee7ff;border-radius:8px}
+select{flex:1}
+@media(max-width:800px){.wrap{flex-direction:column}.right{width:100%;height:40vh}video{height:50vh}}
+</style></head><body><div class=wrap><div class=left><video id=v controls autoplay></video></div><div class=right><input id=s placeholder="Buscar canal"><select id=ch size=20></select></div></div>
+<script>
+let all=[];
+fetch("https://raw.githubusercontent.com/12081985EFRAIN/28122024/refs/heads/main/lista.m3u8").then(r=>r.text()).then(t=>{
+let m={};t.split(/\r?\n/).forEach(l=>{
+if(l.startsWith("#EXTINF"))m={n:l.split(",").pop()};
+else if(/^https?:/.test(l)){all.push({n:m.n,u:l});}});
+render(all); if(all.length)play(all[0].u);
+});
+function render(arr){ch.innerHTML="";arr.forEach(c=>{let o=document.createElement("option");o.text=c.n;o.value=c.u;ch.add(o);});}
+s.oninput=()=>render(all.filter(x=>x.n.toLowerCase().includes(s.value.toLowerCase())));
+ch.onchange=()=>play(ch.value);
+function play(u){if(Hls.isSupported()){window.h&&h.destroy();h=new Hls({enableWorker:true});h.loadSource(u);h.attachMedia(v);}else{v.src=u;}v.play();}
+</script></body></html>
