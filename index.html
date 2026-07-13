@@ -906,14 +906,14 @@ cerrarPlayer();
 </div><script>
 const PASSWORD='0510';
 window.addEventListener('load',()=>{
-if(localStorage.getItem('authenticated')==='true'){
-document.getElementById('login').style.display='none';
-document.getElementById('contenido').style.display='block';
-}
+ if(localStorage.getItem('session_ok')===PASSWORD){
+   document.getElementById('login').style.display='none';
+   document.getElementById('contenido').style.display='block';
+ }
 });
 function login(){
  if(password.value===PASSWORD){
-   localStorage.setItem('authenticated','true');
+   localStorage.setItem('session_ok',PASSWORD);
    document.getElementById('login').style.display='none';
    document.getElementById('contenido').style.display='block';
  }else{
