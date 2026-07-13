@@ -81,6 +81,31 @@ select{flex:1;margin-bottom:10px}
 <script>
 let all=[];
 
+function showChannelList(){
+    document.getElementById('sidebar').classList.remove('hidden');
+}
+
+function hideChannelList(){
+    const panel=document.getElementById('sidebar');
+    if(!panel.classList.contains('hidden')){
+        panel.classList.add('hidden');
+        try{
+            history.pushState({channelsHidden:true},"");
+        }catch(e){}
+    }
+}
+
+window.addEventListener('popstate',()=>{
+    showChannelList();
+});
+
+document.addEventListener('keydown',e=>{
+    if(e.key==='Backspace'){
+        showChannelList();
+    }
+});
+
+
 fetch("https://raw.githubusercontent.com/12081985EFRAIN/28122024/refs/heads/main/lista.m3u8")
 .then(r=>r.text())
 .then(t=>{
@@ -111,7 +136,7 @@ ch.onchange=()=>{
     play(ch.value);
 
     // Ocultar lista al reproducir
-    document.getElementById('sidebar').classList.add('hidden');
+    hideChannelList();
 };
 
 function play(u){
