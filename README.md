@@ -3,4 +3,5 @@
 @ dia 2 saber como funciona el html
 @ dia 3 modificar reproductor
 @ dia 5 mejorando reproductor comaptible con pc y movil
+@ dia 6 mejora de conexion del reproductor estable
 MEJORANDO LA APARIENCIA COMPATIBILIDAD CON DISPOSITIVOS
