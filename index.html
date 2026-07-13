@@ -365,7 +365,7 @@ header{
 <h2 style="text-align:center;color:#00e5ff;text-shadow:0 0 15px #00e5ff">Acceso</h2>
 <input id="password" value="" placeholder="Contraseña" type="password" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
 <button onclick="login()" style="width:100%;padding:12px;background:#00e5ff;color:#001;font-weight:bold">Ingresar</button>
-<p id="error" style="display:none;color:#ff6666">Usuario o contraseña incorrectos.</p></div></div>
+<p id="error" style="display:none;color:#ff6666">Contraseña incorrecta.</p></div></div>
 <div id="contenido" style="display:none;">
 
 <header>
@@ -905,17 +905,11 @@ cerrarPlayer();
 </script>
 </div><script>
 const PASSWORD='0510';
-window.addEventListener('load',()=>{
- if(localStorage.getItem('session_ok')===PASSWORD){
-   document.getElementById('login').style.display='none';
-   document.getElementById('contenido').style.display='block';
- }
-});
 function login(){
  if(password.value===PASSWORD){
-   localStorage.setItem('session_ok',PASSWORD);
    document.getElementById('login').style.display='none';
    document.getElementById('contenido').style.display='block';
+   error.style.display='none';
  }else{
    error.style.display='block';
  }
