@@ -23,6 +23,8 @@ body{
 }
 .sidebar{
     width:340px;
+    transition:width .3s ease;
+
     min-width:280px;
     height:calc(100vh - 20px);
     display:flex;
@@ -66,6 +68,27 @@ select{
 select option{
     padding:10px;
 }
+
+.sidebar.collapsed{
+    width:190px;
+    min-width:190px;
+}
+.sidebar.collapsed input,
+.sidebar.collapsed .topbar{
+    display:none;
+}
+
+/* Mantener nombres de canales legibles incluso en vista reducida */
+.sidebar.collapsed select{
+    font-size:14px;
+}
+select{
+    font-size:15px;
+}
+select option{
+    white-space:nowrap;
+}
+
 .player-area{
     flex:1;
     height:calc(100vh - 20px);
@@ -95,7 +118,7 @@ video{
 
 <div class="wrap">
 
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="topbar">
             <button class="home-btn" onclick="goHome()" tabindex="1">🏠 HOME</button>
         </div>
@@ -114,17 +137,11 @@ video{
 let all=[];
 
 function showChannelList(){
-    document.getElementById('sidebar').classList.remove('hidden');
+    document.getElementById('sidebar').classList.remove('collapsed');
 }
 
 function hideChannelList(){
-    const panel=document.getElementById('sidebar');
-    if(!panel.classList.contains('hidden')){
-        panel.classList.add('hidden');
-        try{
-            history.pushState({channelsHidden:true},"");
-        }catch(e){}
-    }
+    document.getElementById('sidebar').classList.add('collapsed');
 }
 
 window.addEventListener('popstate',()=>{
@@ -182,30 +199,54 @@ function play(u){
     v.play();
 }
 
+
+// Evitar que un clic sobre el video pause la reproducción
+v.addEventListener('pause',()=>{
+    if(!v.ended){
+        setTimeout(()=>{ if(v.paused && !v.ended) v.play(); },10);
+    }
+});
+
 // Mostrar/ocultar lista al hacer clic sobre el reproductor
 v.addEventListener('click',()=>{
-    document.getElementById('sidebar').classList.toggle('hidden');
+    document.getElementById('sidebar').classList.toggle('collapsed');
 });
 
 document.addEventListener('keydown',e=>{
     const panel=document.getElementById('sidebar');
 
     if(e.key==='Escape' || e.key==='ArrowLeft'){
-        panel.classList.remove('hidden');
+        panel.classList.remove('collapsed');
+        ch.focus();
     }
 
     if(e.key==='ArrowDown'){
+        e.preventDefault();
+        ch.focus();
         ch.selectedIndex=Math.min(ch.options.length-1,ch.selectedIndex+1);
+        ch.options[ch.selectedIndex]?.scrollIntoView({block:'nearest'});
     }
 
     if(e.key==='ArrowUp'){
+        e.preventDefault();
+        ch.focus();
         ch.selectedIndex=Math.max(0,ch.selectedIndex-1);
+        ch.options[ch.selectedIndex]?.scrollIntoView({block:'nearest'});
     }
 
-    if(e.key==='Enter' && document.activeElement===ch){
+    if((e.key==='Enter' || e.key==='NumpadEnter') && document.activeElement===ch){
+        e.preventDefault();
         ch.dispatchEvent(new Event('change'));
     }
 });
+
+ch.addEventListener('focus',()=>{
+    if(ch.selectedIndex < 0 && ch.options.length){
+        ch.selectedIndex = 0;
+    }
+});
+
+document.getElementById('sidebar').addEventListener('click',()=>{document.getElementById('sidebar').classList.remove('collapsed');});
 
 function goHome(){
     window.location.href="index.html";
