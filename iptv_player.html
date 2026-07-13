@@ -4,11 +4,45 @@
 body{margin:0;background:#08111f;color:#fff;font-family:Arial}
 .wrap{display:flex;height:100vh}
 .left{flex:1;padding:10px}.right{width:320px;display:flex;flex-direction:column;background:#0b1830;border-left:1px solid #0ff3}
+.topbar{
+    display:flex;
+    justify-content:flex-end;
+    padding:10px 10px 0 10px;
+}
+
+.home-btn{
+    background:#00cfff;
+    color:#08111f;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.25s;
+    box-shadow:0 0 10px #00cfff;
+}
+
+.home-btn:hover{
+    background:#1ee7ff;
+    transform:scale(1.05);
+}
 video{width:100%;height:calc(100vh - 20px);background:#000;border:2px solid #1ee7ff;border-radius:10px;box-shadow:0 0 15px #00cfff55}
 input,select{margin:8px;padding:10px;background:#112;color:#fff;border:1px solid #1ee7ff;border-radius:8px}
 select{flex:1}
 @media(max-width:800px){.wrap{flex-direction:column}.right{width:100%;height:40vh}video{height:50vh}}
-</style></head><body><div class=wrap><div class=left><video id=v controls autoplay></video></div><div class=right><input id=s placeholder="Buscar canal"><select id=ch size=20></select></div></div>
+</style></head><body><div class=wrap><div class=left><video id=v controls autoplay></video></div><div class="right">
+
+    <div class="topbar">
+        <button class="home-btn" onclick="goHome()">
+            🏠 HOME
+        </button>
+    </div>
+
+    <input id="s" placeholder="Buscar canal">
+
+    <select id="ch" size="20"></select>
+
+</div></div>
 <script>
 let all=[];
 fetch("https://raw.githubusercontent.com/12081985EFRAIN/28122024/refs/heads/main/lista.m3u8").then(r=>r.text()).then(t=>{
@@ -21,4 +55,7 @@ function render(arr){ch.innerHTML="";arr.forEach(c=>{let o=document.createElemen
 s.oninput=()=>render(all.filter(x=>x.n.toLowerCase().includes(s.value.toLowerCase())));
 ch.onchange=()=>play(ch.value);
 function play(u){if(Hls.isSupported()){window.h&&h.destroy();h=new Hls({enableWorker:true});h.loadSource(u);h.attachMedia(v);}else{v.src=u;}v.play();}
+function goHome(){
+    window.location.href="index.html";
+}
 </script></body></html>
