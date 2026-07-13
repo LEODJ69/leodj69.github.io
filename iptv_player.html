@@ -70,12 +70,15 @@ select option{
 }
 
 .sidebar.collapsed{
-    width:190px;
-    min-width:190px;
+    width:220px;
+    min-width:220px;
 }
-.sidebar.collapsed input,
+/* Mantener visibles Home, Búsqueda y Lista M3U8 */
 .sidebar.collapsed .topbar{
-    display:none;
+    display:block;
+}
+.sidebar.collapsed input{
+    display:block;
 }
 
 /* Mantener nombres de canales legibles incluso en vista reducida */
@@ -136,6 +139,19 @@ video{
 <script>
 let all=[];
 
+let currentChannelUrl="";
+let reconnectAttempts=0;
+const MAX_RECONNECT_ATTEMPTS=999;
+
+function scheduleReconnect(){
+    if(!currentChannelUrl) return;
+    reconnectAttempts++;
+    setTimeout(()=>{
+        play(currentChannelUrl,true);
+    }, Math.min(5000, 1000 * reconnectAttempts));
+}
+
+
 function showChannelList(){
     document.getElementById('sidebar').classList.remove('collapsed');
 }
@@ -187,18 +203,62 @@ ch.onchange=()=>{
     hideChannelList();
 };
 
-function play(u){
+function play(u,isReconnect=false){
+    currentChannelUrl=u;
+
     if(Hls.isSupported()){
         window.h && h.destroy();
-        h=new Hls({enableWorker:true});
+
+        h=new Hls({
+            enableWorker:true,
+            manifestLoadingTimeOut:15000,
+            levelLoadingTimeOut:15000,
+            fragLoadingTimeOut:20000
+        });
+
         h.loadSource(u);
         h.attachMedia(v);
+
+        h.on(Hls.Events.MANIFEST_PARSED,()=>{
+            reconnectAttempts=0;
+            v.play().catch(()=>{});
+        });
+
+        h.on(Hls.Events.ERROR,(event,data)=>{
+            if(data.fatal){
+                scheduleReconnect();
+            }
+        });
     }else{
         v.src=u;
+        v.play().catch(()=>{});
     }
-    v.play();
 }
 
+
+
+v.addEventListener('error',()=>{
+    scheduleReconnect();
+});
+
+v.addEventListener('stalled',()=>{
+    scheduleReconnect();
+});
+
+v.addEventListener('waiting',()=>{
+    setTimeout(()=>{
+        if(v.readyState < 3){
+            scheduleReconnect();
+        }
+    },5000);
+});
+
+window.addEventListener('online',()=>{
+    reconnectAttempts=0;
+    if(currentChannelUrl){
+        play(currentChannelUrl,true);
+    }
+});
 
 // Evitar que un clic sobre el video pause la reproducción
 v.addEventListener('pause',()=>{
