@@ -363,9 +363,8 @@ header{
 <div id="login" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(180deg,#020b1f,#061a3a,#020b1f);">
 <div style="background:rgba(5,15,40,.9);padding:30px;border-radius:20px;box-shadow:0 0 25px #00e5ff;border:1px solid #00e5ff;width:340px">
 <h2 style="text-align:center;color:#00e5ff;text-shadow:0 0 15px #00e5ff">Acceso</h2>
-<input id="usuario" value="" placeholder="Usuario" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
 <input id="password" value="" placeholder="Contraseña" type="password" style="width:100%;padding:12px;margin:10px 0;background:#081321;color:#fff;border:1px solid #00e5ff">
-<label style="display:flex;align-items:center;gap:8px;color:#fff;margin:8px 0;"><input type="checkbox" id="recordar" checked> Recordar usuario y contraseña</label><button onclick="login()" style="width:100%;padding:12px;background:#00e5ff;color:#001;font-weight:bold">Ingresar</button>
+<label style="display:flex;align-items:center;gap:8px;color:#fff;margin:8px 0;"><input type="checkbox" id="recordar" checked> Recordar contraseña</label><button onclick="login()" style="width:100%;padding:12px;background:#00e5ff;color:#001;font-weight:bold">Ingresar</button>
 <p id="error" style="display:none;color:#ff6666">Usuario o contraseña incorrectos.</p></div></div>
 <div id="contenido" style="display:none;">
 
@@ -905,8 +904,8 @@ cerrarPlayer();
 
 </script>
 </div><script>
-const USUARIO='user',PASSWORD='0510';
-window.addEventListener('load',()=>{const u=localStorage.getItem('usuario');const p=localStorage.getItem('password');if(u&&p){usuario.value=u;password.value=p;recordar.checked=true;}});
-function login(){if(usuario.value===USUARIO&&password.value===PASSWORD){if(recordar.checked){localStorage.setItem('usuario',usuario.value);localStorage.setItem('password',password.value);}document.getElementById('login').style.display='none';document.getElementById('contenido').style.display='block';}else error.style.display='block';}
+const PASSWORD='0510';
+window.addEventListener('load',()=>{const p=localStorage.getItem('password');if(p){password.value=p;recordar.checked=true;login();}});
+function login(){if(password.value===PASSWORD){if(recordar.checked){localStorage.setItem('password',password.value);}else{localStorage.removeItem('password');}document.getElementById('login').style.display='none';document.getElementById('contenido').style.display='block';}else error.style.display='block';}
 </script></body>
 </html>
