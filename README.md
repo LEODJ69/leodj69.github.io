@@ -1,4 +1,3 @@
-version modificada con visor independiente
-web disponible 
-fuentes de video transmicion tomadas de distintas paginas
-reproductor pro modificado
+▼TAREA ESCOLAR
+▼PRESENTACION DE TAREA
+▼CUARSO 1RO DE SECUNDARIA
