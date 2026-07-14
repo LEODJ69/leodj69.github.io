@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TVDeporte</title>
+<!-- ▼ESTILO DE PAGINA NEON▼-->
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;}
+body{background:linear-gradient(180deg,#050816,#081329,#050816);
+     color:white;}
+header{
+    padding:25px;
+    text-align:center;
+    font-size:35px;
+    font-weight:bold;
+    letter-spacing:2px;color:#00ffff;}
+.container{
+    width:95%;
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;padding-bottom:50px;}
+.card{
+    background:rgba(255,255,255,.05);
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
+    transition:.4s;}
+.card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 2px 10px rgba(0,229,255,.25);}
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;}
+.boton{
+    padding:18px;
+    background:#0f172a;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+    font-weight:bold;
+    color:#00ffff;}
+.boton{
+    position:relative;
+    transition:.35s;
+    border:2px solid transparent;}
+.boton:hover{
+    color:#fff;
+    transform:scale(1.05);
+    border-color:#00e5ff;
+    box-shadow:0 0 12px #00e5ff,0 0 24px #00e5ff;}
+.lista{
+    display:none;
+    background:#081321;}
+.lista a{
+    display:block;
+    padding:15px;
+    text-decoration:none;
+    color:white;
+    border-top:1px solid rgba(255,255,255,.1);
+    transition:.3s;}
+.lista a:hover{
+    background:#00ffff;
+    color:#000;
+    font-weight:bold;}
+footer{
+    padding:30px;
+    text-align:center;
+    color:#999;}
+@media(max-width:700px){header{font-size:28px;}
+.card img{height:160px;}}
+
+/* ▼ESTILO AGENDA SEMANAL LIGERA▼ */
+.agenda{
+    width:100%;
+    max-width:500px;
+    margin:10px auto;
+    padding:0 8px;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;}
+.agenda summary{
+    width:100%;
+    display:block;
+    text-align:center;
+    padding:10px;
+    color:#00d8ff;
+    background:#0b1622;
+    border:1px solid #00bcd4;
+    border-radius:6px;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+    user-select:none;
+    box-sizing:border-box;}
+.agenda summary:hover{
+    background:#12314a;}
+.agenda summary::-webkit-details-marker{
+    display:none;}
+.agenda-contenido{
+    margin-top:30px;
+    padding:6px;
+    background:#161616;
+    border:1px solid #2b2b2b;
+    border-radius:6px;
+    box-sizing:border-box;}
+.partido{
+    padding:7px 4px;
+    color:#ffffff;
+    font-size:13px;
+    border-bottom:1px solid #2b2b2b;
+    line-height:1.4;}
+.partido:last-child{
+    border-bottom:none;}
+.partido span{
+    color:#00d8ff;
+    font-weight:bold;}
+.titlebox{
+    padding:7px 4px;
+    color:#05ffff;
+    font-size:20px;
+    border-bottom:1px solid #2b2b2b;
+    line-height:1.4;}
+/* ▼Tablets y móviles▼ */
+@media (max-width:768px){
+    .agenda{
+        max-width:100%;
+        padding:0 6px;}
+    .agenda summary{
+        font-size:13px;
+        padding:9px;}
+    .partido{
+        font-size:12px;}}
+
+/* ▼VISOR PLAYER NEON▼ */
+.visor-overlay{
+display:none;
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.88);
+justify-content:center;
+align-items:center;
+z-index:99999;}
+
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
+
+.visor-contenido{
+width:96%;
+max-width:1500px;
+height:92%;
+background:#081321;
+border-radius:20px;
+overflow:hidden;
+position:relative;
+border:2px solid #00e5ff;
+box-shadow:0 4px 12px rgba(0,0,0,.3);}
+#playerFrame{
+width:100%;
+height:100%;
+border:none;}
+.cerrar{
+position:absolute;
+right:15px;
+top:15px;
+width:48px;
+height:48px;
+border:none;
+border-radius:50%;
+background:#ff003c;
+color:#fff;
+font-size:25px;
+cursor:pointer;
+z-index:100;
+transition:.3s;}
+.cerrar:hover{
+opacity:.9;}
+header{
+    padding:25px;
+    text-align:center;
+    font-size:35px;
+    font-weight:bold;
+    letter-spacing:3px;
+    color:#00e5ff;
+    text-transform:uppercase;
+    text-shadow:
+        0 0 8px currentColor,
+        0 0 18px currentColor,
+        0 0 35px currentColor,
+        0 0 60px currentColor;
+    }
+</style>
+
+<!-- permite reproducir transmisiones HLS con javascript -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<!-- ▼1er TITULO▼ -->
+<header>
+ IPTV - TV DEPORTE
+<!-- ▼AGENDA SEMANAL▼ -->
+    <div class="container">
+    <div class="agenda-contenido">
+        <div class="titlebox">
+            agenda semanal
+        </div>
+        <div class="partido">
+            <span>Sabado 11</span><br>
+            17:00 | Noruega vs Inglaterra
+        </div>
+
+        <div class="partido">
+            <span>Sabado 11</span><br>
+            21:00 | Argentina vs Suiza
+        </div>
+
+        <div class="partido">
+            <span>Martes 14</span><br>
+            15:00 | Francia vs España
+        </div>
+
+    </div>
+</details>
+<!-- ▲AGENDA SEMANAL▲ -->
+
+<!--▼reproductor media player interno▼-->
+</footer>
+<div id="visorPlayer" class="visor-overlay">
+    <div class="visor-contenido">
+        <button class="cerrar" onclick="cerrarPlayer()">X</button>
+        <iframe
+            id="playerFrame"
+            src=""
+            allowfullscreen
+            allow="autoplay; fullscreen; encrypted-media"
+            scrolling="no">
+        </iframe>
+    </div>
+</div>
+<!-- ▲reproductor media player▲ -->
+
+<!-- TARJETA CONTAINER PARA TODOS-->
+</header>
+<div class="container">
+<!-- TARJETA 1 -->
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/dsports.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('DIRECTV')">DIRECTV</div>
+
+<div class="lista" id="DIRECTV">
+<a href="#" onclick="abrirPlayer('https://la16hd.com/dsportsar.php');return false;">DIRECTV OP1</a>
+<a href="#" onclick="abrirPlayer('https://esvidzypro.sbs/dsportsar.php');return false;">DIRECTV OP2</a>
+<a href="#" onclick="abrirPlayer('https://sudamericaplay.sbs/canal_8112/cza_dsports.html');return false;">DIRECTV OP3</a>
+<a href="#" onclick="abrirPlayer('https://streamtp.sbs/global2.php?stream=dsports');return false;">DIRECTV OP4</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/canales.php?stream=dsports');return false;">DIRECTV OP5</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/online/canales.php?stream=dsports');return false;">DIRECTV OP6</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/vivo/canales.php?stream=dsports');return false;">DIRECTV OP7</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/directvsports.php');return false;">DIRECTV OP8</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/directvsportshd.php');return false;">DIRECTV OP9</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/dsports-sharecast.php');return false;">DIRECTV OP10</a>
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=dsports');return false;">DIRECTV OP11</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=dsports2');return false;">DIRECTV OP12</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=dsportsplus');return false;"> DIRECTV OP13</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/canales.php?stream=goltv');return false;">DIRECTV OP14</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/vivo/canales.php?stream=vtvplus');return false;">DIRECTV OP15</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/atv.php');return false;">DIRECTV OP16</a>
+</div>
+
+<!-- TARJETA 2 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/espn.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('ESPN')">ESPN</div>
+
+<div class="lista" id="ESPN">
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=espnco');return false;">ESPN OP1</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espnar');return false;">ESPN OP2</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espn4ar');return false;">ESPN OP3</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espnpremium');return false;">ESPN OP4</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/espnhd.php');return false;">ESPN OP5</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/espn-sharecast.php');return false;">ESPN OP6</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espndeportes');return false;">ESPN OP7</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espnmx');return false;">ESPN OP8</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espn2mx');return false;">ESPN OP9</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espn3mx');return false;">ESPN OP10</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=espn4mx');return false;">ESPN OP11</a>
+</div>
+
+<!-- TARJETA 3 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/tyc_sports.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('TYC SPORTS')">TYC SPORTS</div>
+
+<div class="lista" id="TYC SPORTS">
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/tycsports-sd.php');return false;">TYC SPORTS OP1</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/tntsports.php');return false;">TYC SPORTS OP2</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=tycsports');return false;">TYC SPORTS OP3</a>
+<a href="#" onclick="abrirPlayer('https://streamtp.sbs/global1.php?stream=tycsports');return false;">TYC SPORTS OP4</a></div>
+
+<!-- TARJETA 4 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/tudn.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('TUDN')">TUDN</div>
+
+<div class="lista" id="TUDN">
+<a href="#" onclick="abrirPlayer('https://esvidzypro.sbs/tudnmx.php');return false;">TUDN OP1</a>
+<a href="#" onclick="abrirPlayer('https://esvidzypro.sbs/vix.php');return false;">TUDN OP2</a>
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=tudnmx');return false;">TUDN OP3</a></div>
+
+<!-- TARJETA 5 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/tnt.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('TNT SPORTS')">TNT SPORTS</div>
+
+<div class="lista" id="TNT SPORTS">
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/cdf.php');return false;">TNT SPORTS OP1</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=tntsports');return false;">TNT SPORTS OP2</a></div>
+
+<!-- TARJETA 6 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/sporttv.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('deportes')">SPORTTV</div>
+
+<div class="lista" id="deportes">
+<a href="#" onclick="abrirPlayer('https://esvidzypro.sbs/sportv1.php');return false;">SPORTTV OP1</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/tv/canales.php?stream=sportv');return false;">SPORTTV OP2</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/online/canal.php?stream=sportv');return false;">SPORTTV OP3</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/vivo/canales.php?stream=sportv');return false;">SPORTTV OP4</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=sporttvbr1');return false;">SPORTTV OP5</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=sporttvbr2');return false;">SPORTTV OP6</a></div>
+
+<!-- TARJETA 7 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/sport-tv.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('SPORT-TV')">SPORT-TV</div>
+
+<div class="lista" id="SPORT-TV">
+<a href="#" onclick="abrirPlayer('https://sportzonline.click/channels/pt/sporttv1.php');return false;">SPORT-TV OP1</a>
+<a href="#" onclick="abrirPlayer('https://sportzonline.click/channels/pt/sporttv2.php');return false;">SPORT-TV OP2</a>
+<a href="#" onclick="abrirPlayer('https://sportzonline.click/channels/pt/sporttv3.php');return false;">SPORT-TV OP3</a>
+<a href="#" onclick="abrirPlayer('https://sportzonline.click/channels/pt/sporttv4.php');return false;">SPORT-TV OP4</a>
+<a href="#" onclick="abrirPlayer('https://sportzonline.click/channels/pt/sporttv5.php');return false;">SPORT-TV OP5</a>
+<a href="#" onclick="abrirPlayer('https://w4.sportsonlline.click/channels/pt/sporttv5.php');return false;">SPORT-TV OP6</a></div>
+
+<!-- TARJETA 8 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/telemundo.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('TELEMUNDO')">TELEMUNDO</div>
+
+<div class="lista" id="TELEMUNDO">
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=telemundo');return false;">TELEMUNDO OP1</a>
+<a href="#" onclick="abrirPlayer('https://streamtp.sbs/global2.php?stream=telemundousa');return false;">TELEMUNDO OP2</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/tv/canales.php?stream=telemundo');return false;">TELEMUNDO OP3</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/online/canal.php?stream=telemundo');return false;">TELEMUNDO OP4</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/canales.php?stream=telemundo');return false;">TELEMUNDO OP5</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/online/canales.php?stream=telemundo');return false;">TELEMUNDO OP6</a>
+<a href="#" onclick="abrirPlayer('https://la20hd.com/vivo/canal.php?stream=telemundo');return false;">TELEMUNDO OP7</a></div>
+
+<!-- TARJETA 9 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/canal5.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('CANAL5')">CANAL 5</div>
+
+<div class="lista" id="CANAL5">
+<a href="#" onclick="abrirPlayer('https://esvidzypro.sbs/canal5mx.php');return false;">CANAL5</a>
+<a href="#" onclick="abrirPlayer('https://stream-xhd.com/live1.php?stream=canal5mx');return false;">CANAL5 OP2</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/online/canal.php?stream=canal5');return false;">CANAL5 OP3</a>
+<a href="#" onclick="abrirPlayer('https://tvhd1.com/canales/canal5.php');return false;">CANAL5 OP4</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/canales.php?stream=canal5');return false;">CANAL5 OP5</a>
+<a href="#" onclick="abrirPlayer('https://la16hd.com/canal5mx.php');return false;">CANAL5 OP6</a></div>
+
+<!-- TARJETA 10 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/caracol.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('caracol')">CARACOL</div>
+<div class="lista" id="caracol">
+
+<a href="#" onclick="abrirPlayer('https://esvidzy99.co/caracoltv.php');return false;">CARACOL TV</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/caracol.php');return false;">CARACOL TV OP2</a>
+<a href="#" onclick="abrirPlayer('https://tvhd2.com/tv/canales.php?stream=caracol');return false;">CARACOL TV OP3</a>
+<a href="#" onclick="abrirPlayer('https://tvtvhd.com/canales.php?stream=caracol');return false;">CARACOL TV OP4</a>
+</div>
+
+<!-- TARJETA 11 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/americatv.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('AMERICATV')">AMERICA</div>
+
+<div class="lista" id="AMERICATV">
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/espn4.php');return false;">AMERICA TV</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/america.php');return false;">AMERICA TV OP2</a>
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=americatv');return false;">AMERICA TV OP3</a></div>
+
+
+<!-- TARJETA 12 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/chilevisión.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="abrir('CHILEVISION')">CHILEVISIÓN</div>
+
+<div class="lista" id="CHILEVISION">
+<a href="#" onclick="abrirPlayer('https://streamx-hd.com/live1.php?stream=chilevision');return false;">CHILEVISION</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/ecfutbol.php');return false;">CHILEVISION OP2</a>
+<a href="#" onclick="abrirPlayer('https://elcanaldeportivo.org/chilevision.php');return false;">CHILEVISION OP3</a></div>
+
+<!-- TARJETA 13 -->
+</div>
+<div class="card">
+<div style="display: flex; justify-content: center; width: 100%;">
+<img src="LOGOS/iptv.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
+<div class="boton" onclick="window.open('iptv_player.html','_blank');">IPTV PLAYER</div>
+</div>
+
+<!-- ▼ pie de pagina y redes sociales ▼-->
+</div>
+<footer>
+    <p>© 2026 TVDeporte v1.0 | Todos los derechos reservados</p>
+
+    <a href="https://facebook.com" target="_blank">Facebook</a> |
+    <a href="https://youtube.com" target="_blank">YouTube</a> |
+    <a href="https://telegram.org" target="_blank">Telegram</a>
+</footer>
+<!-- ▲ pie de pagina y redes sociales ▲-->
+
+<!-- ▼boton menu deplegable de canal▼ -->
+<script>
+function abrir(id){
+var lista=document.getElementById(id);
+if(lista.style.display==="block"){
+lista.style.display="none";}else{
+document.querySelectorAll(".lista").forEach(function(e){
+e.style.display="none";});
+lista.style.display="block";}
+}
+</script>
+<!-- ▲boton menu deplegable▲ -->
+
+<!-- ▼script visor player▼ -->
+<script>
+function abrirPlayer(url){
+const frame=document.getElementById("playerFrame");
+frame.src=url;
+document.getElementById("visorPlayer").style.display="flex";
+document.body.style.overflow="hidden";
+}
+function cerrarPlayer(){
+const frame=document.getElementById("playerFrame");
+frame.src="";
+document.getElementById("visorPlayer").style.display="none";
+document.body.style.overflow="auto";
+}
+window.addEventListener("keydown",function(e){
+if(e.key==="Escape"){
+cerrarPlayer();
+}
+});
+document.getElementById("visorPlayer").addEventListener("click",function(e){
+if(e.target===this){
+cerrarPlayer();
+}
+});
+</script>
+<!-- ▲script visor player▲ -->
+<body>
+</body>
+</html>
