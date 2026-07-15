@@ -140,8 +140,19 @@ video{
 let all=[];
 
 let currentChannelUrl="";
+let currentType="";
+
 let reconnectAttempts=0;
 const MAX_RECONNECT_ATTEMPTS=999;
+
+function detectMediaType(url){
+    const u=url.toLowerCase().split('?')[0];
+    if(u.endsWith('.mp3')) return 'audio';
+    if(u.endsWith('.mp4')) return 'video';
+    if(u.endsWith('.m3u') || u.endsWith('.m3u8')) return 'hls';
+    return 'auto';
+}
+
 
 function scheduleReconnect(){
     if(!currentChannelUrl) return;
@@ -180,6 +191,12 @@ fetch("https://raw.githubusercontent.com/12081985EFRAIN/28122024/refs/heads/main
     });
 
     render(all);
+
+    // Reproducir automáticamente el primer canal de la lista
+    if(all.length > 0){
+        ch.selectedIndex = 0;
+        play(all[0].u);
+    }
 });
 
 function render(arr){
@@ -205,13 +222,29 @@ ch.onchange=()=>{
 
 function play(u,isReconnect=false){
     currentChannelUrl=u;
+    currentType=detectMediaType(u);
+
+    if(currentType==='audio' || currentType==='video'){
+        if(window.h){try{h.destroy();}catch(e){}}
+        v.src=u;
+        v.load();
+        v.play().catch(()=>{});
+        reconnectAttempts=0;
+        return;
+    }
 
     if(Hls.isSupported()){
         window.h && h.destroy();
 
         h=new Hls({
             enableWorker:true,
-            manifestLoadingTimeOut:15000,
+            manifestLoadingTimeOut:10000,
+            manifestLoadingMaxRetry:20,
+            levelLoadingMaxRetry:20,
+            fragLoadingMaxRetry:20,
+            fragLoadingRetryDelay:1000,
+            maxBufferLength:60,
+            maxMaxBufferLength:120,
             levelLoadingTimeOut:15000,
             fragLoadingTimeOut:20000
         });
