@@ -1,3 +1,1 @@
-mejora de reproductor
-se añadio botones especiales
-como ser busqueda, favoritos entre otros.
+tratando de realizar mi tarea basica como novato en diseñar pagina web
