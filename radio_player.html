@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emisoras de Radio</title>
+
 <style>
 *{
     margin:0;
@@ -157,38 +157,51 @@ body{
 }
 </style>
 </head>
+
 <body>
+
 <div class="phone">
-<div class="header">
-<h1>RADIO ONLINE</h1>
-</div>
-<div class="display">
-<div class="station" id="stationName">
+
+    <div class="header">
+        <h1>RADIO ONLINE</h1>
+    </div>
+
+    <div class="display">
+        <div class="station" id="stationName">
             Seleccione una emisora
         </div>
-<div class="controls">
-<button class="btn" id="playBtn">▶ Play</button>
-<button class="btn" id="pauseBtn">⏸ Pausa</button>
-</div>
-</div>
-<div class="volume-box">
+
+        <div class="controls">
+            <button class="btn" id="playBtn">▶ Play</button>
+            <button class="btn" id="pauseBtn">⏸ Pausa</button>
+        </div>
+    </div>
+
+    <div class="volume-box">
         🔊 Volumen
-        <input id="volume" max="1" min="0" step="0.01" type="range" value="1"/>
+        <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+    </div>
+
+    <div class="list-title">LISTA DE EMISORAS<br>
+        <button class="btn" id="showFavBtn">★ Favoritos</button> 
+        <button class="btn" id="showAllBtn">Todas</button>
+        <button class="btn" onclick="goHome()" tabindex="1">🏠 HOME</button></div>
+
+    <div style="padding:2px;">
+        <input id="searchBox" type="text" placeholder="Buscar emisora o categoría..." 
+        style="width:100%;padding:10px;border-radius:10px;border:1px solid #00d4ff;background:#08142c;color:white;">
+    </div>
+
+    <div id="playlist"></div>
+
 </div>
-<div class="list-title">LISTA DE EMISORAS<br/>
-<button class="btn" id="showFavBtn">★ Favoritos</button>
-<button class="btn" id="showAllBtn">Todas</button>
-<button class="btn" onclick="goHome()" tabindex="1">🏠 HOME</button></div>
-<div style="padding:2px;">
-<input id="searchBox" placeholder="Buscar emisora o categoría..." style="width:100%;padding:10px;border-radius:10px;border:1px solid #00d4ff;background:#08142c;color:white;" type="text"/>
-</div>
-<div id="playlist"></div>
-</div>
+
 <audio id="audio" preload="none"></audio>
+
 <script>
 
 const M3U_URL =
-'https://raw.githubusercontent.com/12081985EFRAIN/28122024/main/radiosbo.m3u';
+'https://raw.githubusercontent.com/12081985EFRAIN/28122024/main/radios.m3u8';
 
 const audio = document.getElementById('audio');
 const playlist = document.getElementById('playlist');
@@ -199,19 +212,29 @@ let reconnectTimer = null;
 let reconnectAttempts = 0;
 let stations = [];
 
+
+async function fetchWithFallback(url){
+ const urls=[url,'https://cors.isomorphic-git.org/'+url,'https://corsproxy.io/?'+encodeURIComponent(url)];
+ let err='';
+ for(const u of urls){
+  try{const r=await fetch(u,{cache:'no-store'}); if(r.ok) return await r.text(); err=r.status;}
+  catch(e){err=e;}
+ }
+ throw err;
+}
+
 async function loadM3U(){
 
     try{
 
-        const response = await fetch(M3U_URL,{mode:'cors',cache:'no-store'});
-        const text = await response.text();
+        const text = await fetchWithFallback(M3U_URL);
 
         parseM3U(text);
 
     }catch(error){
 
         playlist.innerHTML =
-        '<div class="channel">No se pudo cargar la lista. Verifique CORS/GitHub.</div>';
+        '<div class="channel">Error cargando lista M3U</div>';
 
         console.error(error);
     }
@@ -309,7 +332,7 @@ function reconnect(){
 
     reconnectTimer=setTimeout(()=>{
 
-        if(currentUrl){ audio.crossOrigin='anonymous';
+        if(currentUrl){
 
             reconnectAttempts++;
             console.log('Reconectando intento', reconnectAttempts);
@@ -341,32 +364,6 @@ function goHome(){
     window.location.href="home.html";
 }
 </script>
-<script>
-// Integración: sustituir carga fija por detección compatible de M3U/M3U8 y HLS.js.
-const HLS_JS='https://cdn.jsdelivr.net/npm/hls.js@latest';
-if(!document.querySelector('script[data-hls]')){
- const s=document.createElement('script');
- s.src=HLS_JS;s.dataset.hls=1;document.head.appendChild(s);
-}
-const OLD=loadM3U;
-loadM3U=async function(){
- const url='https://raw.githubusercontent.com/12081985EFRAIN/28122024/main/radios.m3u8';
- const r=await fetch(url,{cache:'no-store'});
- parseM3U(await r.text());
-}
-const _play=playStation;
-playStation=function(name,url){
- stationName.textContent=name;
- currentUrl=url;
- if(window.Hls && Hls.isSupported() && url.toLowerCase().includes('.m3u8')){
-   if(window._hls)window._hls.destroy();
-   window._hls=new Hls();
-   window._hls.loadSource(url);
-   window._hls.attachMedia(audio);
-   window._hls.on(Hls.Events.MANIFEST_PARSED,()=>audio.play().catch(()=>{}));
- }else{
-   audio.src=url;audio.load();audio.play().catch(()=>{});
- }
-}
-</script></body>
+
+</body>
 </html>
