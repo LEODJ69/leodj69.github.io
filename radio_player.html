@@ -1,354 +1,348 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emisoras de Radio</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Radio Online</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
-
+*{box-sizing:border-box}
 body{
-    background:#050816;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    margin:0;
+    background:#08111f;
     color:#fff;
-}
-
-.phone{
-    width:380px;
-    max-width:100vw;
-    height:100vh;
-    background:linear-gradient(180deg,#0c1124,#02050f);
-    border-radius:30px;
-    border:2px solid #00d4ff;
-    box-shadow:
-        0 0 20px #00d4ff,
-        0 0 60px rgba(0,212,255,.25);
+    font-family:Arial,sans-serif;
     overflow:hidden;
+}
+.wrap{
+    display:flex;
+    height:100vh;
+    padding:10px;
+    gap:10px;
+}
+.sidebar{
+    width:340px;
+    transition:width .3s ease;
+
+    min-width:280px;
+    height:calc(100vh - 20px);
     display:flex;
     flex-direction:column;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+    border-radius:16px;
+    border:1px solid rgba(0,207,255,.25);
+    overflow:hidden;
 }
-
-.header{
-    text-align:center;
-    padding:15px;
-    border-bottom:1px solid rgba(0,212,255,.3);
+.topbar{
+    padding:10px;
 }
-
-.header h1{
-    color:#00d4ff;
-    font-size:22px;
-    letter-spacing:2px;
-}
-
-.display{
-    padding:20px;
-    text-align:center;
-}
-
-.radio-icon{
-    width:130px;
-    height:130px;
-    margin:auto;
-    border-radius:50%;
-    border:3px solid #00d4ff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:60px;
-    box-shadow:0 0 25px #00d4ff;
-}
-
-.station{
-    margin-top:15px;
-    font-size:18px;
-    color:#a6ff00;
-    font-weight:bold;
-}
-
-.controls{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    margin-top:20px;
-}
-
-.btn{
-    background:#08142c;
-    border:1px solid #00d4ff;
-    color:#02ff17;
-    padding:12px 18px;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:16px;
-}
-
-.btn:hover,
-.btn:focus{
-    background:#00d4ff;
-    color:#000;
-}
-
-.volume-box{
-    padding:15px;
-    
-}
-
-#volume{
+.home-btn{
     width:100%;
-}
-
-.list-title{
-    text-align:center;
-    padding:10px;
-    color:#a6ff00;
-    border-top:1px solid rgba(0,212,255,.2);
-}
-
-#playlist{
-    flex:1;
-    overflow-y:auto;
-    padding:10px;
-}
-
-.channel{
-    background:#08142c;
-    margin-bottom:8px;
+    background:#00cfff;
+    color:#08111f;
+    border:none;
     padding:12px;
-    border-radius:12px;
-    cursor:pointer;
-    border:1px solid transparent;
-}
-
-.channel:hover,
-.channel:focus{
-    border-color:#00d4ff;
-}
-
-.channel.active{
-    background:#00d4ff;
-    color:#000;
-    font-weight:bold;
-}
-
-::-webkit-scrollbar{
-    width:6px;
-}
-
-::-webkit-scrollbar-thumb{
-    background:#00d4ff;
     border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+input{
+    margin:8px;
+    padding:12px;
+    background:#112;
+    color:#fff;
+    border:1px solid #1ee7ff;
+    border-radius:8px;
+}
+select{
+    flex:1;
+    margin:8px;
+    background:#0d1728;
+    color:#fff;
+    border:1px solid #1ee7ff;
+    border-radius:8px;
+    padding:4px;
+}
+select option{
+    padding:10px;
 }
 
-@media(max-width:600px){
-    .phone{
-        width:100%;
-        height:100vh;
-        border-radius:0;
+.sidebar.collapsed{
+    width:220px;
+    min-width:220px;
+}
+/* Mantener visibles Home, Búsqueda y Lista M3U8 */
+.sidebar.collapsed .topbar{
+    display:block;
+}
+.sidebar.collapsed input{
+    display:block;
+}
+
+/* Mantener nombres de canales legibles incluso en vista reducida */
+.sidebar.collapsed select{
+    font-size:14px;
+}
+select{
+    font-size:15px;
+}
+select option{
+    white-space:nowrap;
+}
+
+.player-area{
+    flex:1;
+    height:calc(100vh - 20px);
+}
+video{
+    width:100%;
+    height:100%;
+    background:#000;
+    border:2px solid #1ee7ff;
+    border-radius:12px;
+    box-shadow:0 0 15px #00cfff55;
+}
+:focus{
+    outline:3px solid #ffd700;
+    outline-offset:2px;
+}
+
+@media (max-width:900px){
+    .sidebar{
+        width:38%;
+        min-width:220px;
     }
 }
 </style>
 </head>
-
 <body>
 
-<div class="phone">
+<div class="wrap">
 
-    <div class="header">
-        <h1>RADIO ONLINE</h1>
-    </div>
-
-    <div class="display">
-        <div class="station" id="stationName">
-            Seleccione una emisora
+    <div class="sidebar" id="sidebar">
+        <div class="topbar">
+            <button class="home-btn" onclick="goHome()" tabindex="1">🏠 HOME</button>
         </div>
 
-        <div class="controls">
-            <button class="btn" id="playBtn">▶ Play</button>
-            <button class="btn" id="pauseBtn">⏸ Pausa</button>
-        </div>
+        <input id="s" type="text" placeholder="Buscar canal..." tabindex="2">
+        <select id="ch" size="25" tabindex="3"></select>
     </div>
 
-    <div class="volume-box">
-        🔊 Volumen
-        <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+    <div class="player-area">
+        <audio id="v" controls autoplay muted playsinline style="width:100%;margin-top:40px"></audio>
     </div>
-
-    <div class="list-title">LISTA DE EMISORAS<br>
-        <button class="btn" id="showFavBtn">★ Favoritos</button> 
-        <button class="btn" id="showAllBtn">Todas</button>
-        <button class="btn" onclick="goHome()" tabindex="1">🏠 HOME</button></div>
-
-    <div style="padding:2px;">
-        <input id="searchBox" type="text" placeholder="Buscar emisora o categoría..." 
-        style="width:100%;padding:10px;border-radius:10px;border:1px solid #00d4ff;background:#08142c;color:white;">
-    </div>
-
-    <div id="playlist"></div>
 
 </div>
 
-<audio id="audio" preload="none"></audio>
-
 <script>
+let all=[];
 
-const M3U_URL =
-'https://raw.githubusercontent.com/12081985EFRAIN/28122024/main/radiosbo.m3u';
+let currentChannelUrl="";
+let currentType="";
 
-const audio = document.getElementById('audio');
-const playlist = document.getElementById('playlist');
-const stationName = document.getElementById('stationName');
+let reconnectAttempts=0;
+const MAX_RECONNECT_ATTEMPTS=999;
 
-let currentUrl = '';
-let reconnectTimer = null;
-let reconnectAttempts = 0;
-let stations = [];
+function detectMediaType(url){
+    const u=url.toLowerCase().split('?')[0];
+    if(/\.(mp3|aac|m4a|flac|ogg|opus|weba)$/i.test(u)) return 'audio';
+    if(u.endsWith('.mp4')) return 'video';
+    if(u.endsWith('.m3u') || u.endsWith('.m3u8')) return 'hls';
+    return 'audio';
+}
 
-async function loadM3U(){
 
-    try{
+function scheduleReconnect(){
+    if(!currentChannelUrl) return;
+    reconnectAttempts++;
+    setTimeout(()=>{
+        play(currentChannelUrl,true);
+    }, Math.min(5000, 1000 * reconnectAttempts));
+}
 
-        const response = await fetch(M3U_URL,{mode:'cors',cache:'no-store'});
-        const text = await response.text();
 
-        parseM3U(text);
+function showChannelList(){
+    document.getElementById('sidebar').classList.remove('collapsed');
+}
 
-    }catch(error){
+function hideChannelList(){
+    document.getElementById('sidebar').classList.add('collapsed');
+}
 
-        playlist.innerHTML =
-        '<div class="channel">No se pudo cargar la lista. Verifique CORS/GitHub.</div>';
+window.addEventListener('popstate',()=>{
+    showChannelList();
+});
 
-        console.error(error);
+document.addEventListener('keydown',e=>{
+    if(e.key==='Backspace'){
+        showChannelList();
     }
-}
+});
 
-function parseM3U(content){
-
-    playlist.innerHTML = '';
-
-    const lines = content.split('\n');
-
-    let name = '';
-
-    for(let i=0;i<lines.length;i++){
-
-        const line = lines[i].trim();
-
-        if(line.startsWith('#EXTINF')){
-
-            const parts = line.split(',');
-            name = parts[parts.length-1];
-
-        }else if(
-            line &&
-            !line.startsWith('#')
-        ){
-
-            stations.push({name:name || 'Radio', url:line});
-            createChannel(name || 'Radio', line);
-        }
-    }
-}
-
-const FKEY='radioFavs';
-let showFav=false;
-function favs(){return JSON.parse(localStorage.getItem(FKEY)||'[]')}
-function saveFav(a){localStorage.setItem(FKEY,JSON.stringify(a))}
-function createChannel(name,url){
-
-    const div = document.createElement('div');
-
-    div.className='channel';
-    const star=document.createElement('span');star.textContent=favs().includes(url)?'★ ':'☆ ';star.style.cursor='pointer';star.onclick=(e)=>{e.stopPropagation();let f=favs(); if(f.includes(url))f=f.filter(x=>x!=url); else f.push(url); saveFav(f); renderList();}; div.appendChild(star); const t=document.createElement('span');t.textContent=name; div.appendChild(t);
-    div.tabIndex=0;
-
-    div.onclick=()=>playStation(name,url);
-
-    playlist.appendChild(div);
-}
-
-function playStation(name,url){
-
-    document.querySelectorAll('.channel')
-    .forEach(el=>el.classList.remove('active'));
-
-    [...document.querySelectorAll('.channel')]
-    .find(el=>el.textContent===name)
-    ?.classList.add('active');
-
-    stationName.textContent=name;
-
-    currentUrl=url;
-
-    audio.src=url;
-    audio.load();
-
-    audio.play()
-    .catch(console.error);
-}
-
-document.getElementById('playBtn')
-.onclick=()=>audio.play();
-
-document.getElementById('pauseBtn')
-.onclick=()=>audio.pause();
-
-document.getElementById('volume')
-.oninput=e=>audio.volume=e.target.value;
-
-
-document.getElementById('searchBox').addEventListener('input', e=>{
-    const q = e.target.value.toLowerCase();
-    document.querySelectorAll('.channel').forEach(ch=>{
-        ch.style.display = ch.textContent.toLowerCase().includes(q) ? '' : 'none';
+fetch("https://raw.githubusercontent.com/12081985EFRAIN/28122024/main/radios.m3u8",{cache:"no-store"})
+.then(r=>r.text())
+.then(t=>{
+    let m={};
+    t.split(/\r?\n/).forEach(l=>{
+        if(l.startsWith("#EXTINF")) m={n:l.split(",").pop()};
+        else if(/^https?:/.test(l)) all.push({n:m.n,u:l});
     });
+
+    render(all);
+
+    // Reproducir automáticamente el primer canal de la lista
+    if(all.length > 0){
+        ch.selectedIndex = 0;
+        play(all[0].u);
+    }
 });
 
-audio.addEventListener('playing', ()=>{
-    reconnectAttempts = 0;
-});
-
-function reconnect(){
-
-    clearTimeout(reconnectTimer);
-
-    reconnectTimer=setTimeout(()=>{
-
-        if(currentUrl){ audio.crossOrigin='anonymous';
-
-            reconnectAttempts++;
-            console.log('Reconectando intento', reconnectAttempts);
-
-            const t = audio.currentTime || 0;
-
-            audio.src='';
-            audio.load();
-
-            setTimeout(()=>{
-                audio.src=currentUrl;
-                audio.load();
-                audio.currentTime=t;
-                audio.play().catch(()=>{});
-            },1000);
-
-        }
-
-    }, Math.min(3000 + reconnectAttempts*2000, 15000));
+function render(arr){
+    ch.innerHTML="";
+    arr.forEach(c=>{
+        let o=document.createElement("option");
+        o.text=c.n;
+        o.value=c.u;
+        ch.add(o);
+    });
 }
 
+s.oninput=()=>render(
+    all.filter(x=>x.n.toLowerCase().includes(s.value.toLowerCase()))
+);
 
-function renderList(){playlist.innerHTML='';stations.filter(s=>!showFav||favs().includes(s.url)).forEach(s=>createChannel(s.name,s.url));}
-document.getElementById('showFavBtn').onclick=()=>{showFav=true;renderList()};document.getElementById('showAllBtn').onclick=()=>{showFav=false;renderList()};
-parseM3U=(c=>{return function(content){stations=[]; const lines=content.split('\n'); let name=''; for(let l of lines){l=l.trim(); if(l.startsWith('#EXTINF')) name=l.split(',').pop(); else if(l && !l.startsWith('#')) stations.push({name:name||'Radio',url:l});} renderList();}})();
-loadM3U();
+ch.onchange=()=>{
+    play(ch.value);
+
+    // Ocultar lista al reproducir
+    hideChannelList();
+};
+
+function play(u,isReconnect=false){
+    currentChannelUrl=u;
+    currentType=detectMediaType(u);
+
+    if(currentType==='audio' || currentType==='video'){
+        if(window.h){try{h.destroy();}catch(e){}}
+        v.type='audio/*';
+        v.src=u;
+        v.load();
+        v.play().catch(()=>{});
+        reconnectAttempts=0;
+        return;
+    }
+
+    if(Hls.isSupported()){
+        window.h && h.destroy();
+
+        h=new Hls({
+            enableWorker:true,
+            manifestLoadingTimeOut:10000,
+            manifestLoadingMaxRetry:20,
+            levelLoadingMaxRetry:20,
+            fragLoadingMaxRetry:20,
+            fragLoadingRetryDelay:1000,
+            maxBufferLength:60,
+            maxMaxBufferLength:120,
+            levelLoadingTimeOut:15000,
+            fragLoadingTimeOut:20000
+        });
+
+        h.loadSource(u);
+        h.attachMedia(v);
+
+        h.on(Hls.Events.MANIFEST_PARSED,()=>{
+            reconnectAttempts=0;
+            v.play().catch(()=>{});
+        });
+
+        h.on(Hls.Events.ERROR,(event,data)=>{
+            if(data.fatal){
+                scheduleReconnect();
+            }
+        });
+    }else if(v.canPlayType('application/vnd.apple.mpegurl')){
+        v.src=u;v.load();v.play().catch(()=>{});
+    }else{
+        v.src=u;v.load();v.play().catch(()=>{});
+    }
+}
+v.addEventListener('canplay',()=>{v.muted=false;});
+
+
+
+v.addEventListener('error',()=>{
+    scheduleReconnect();
+});
+
+v.addEventListener('stalled',()=>{
+    scheduleReconnect();
+});
+
+v.addEventListener('waiting',()=>{
+    setTimeout(()=>{
+        if(v.readyState < 3){
+            scheduleReconnect();
+        }
+    },5000);
+});
+
+window.addEventListener('online',()=>{
+    reconnectAttempts=0;
+    if(currentChannelUrl){
+        play(currentChannelUrl,true);
+    }
+});
+
+// Evitar que un clic sobre el video pause la reproducción
+v.addEventListener('pause',()=>{
+    if(!v.ended){
+        setTimeout(()=>{ if(v.paused && !v.ended) v.play(); },10);
+    }
+});
+
+// Mostrar/ocultar lista al hacer clic sobre el reproductor
+v.addEventListener('click',()=>{
+    document.getElementById('sidebar').classList.toggle('collapsed');
+});
+
+document.addEventListener('keydown',e=>{
+    const panel=document.getElementById('sidebar');
+
+    if(e.key==='Escape' || e.key==='ArrowLeft'){
+        panel.classList.remove('collapsed');
+        ch.focus();
+    }
+
+    if(e.key==='ArrowDown'){
+        e.preventDefault();
+        ch.focus();
+        ch.selectedIndex=Math.min(ch.options.length-1,ch.selectedIndex+1);
+        ch.options[ch.selectedIndex]?.scrollIntoView({block:'nearest'});
+    }
+
+    if(e.key==='ArrowUp'){
+        e.preventDefault();
+        ch.focus();
+        ch.selectedIndex=Math.max(0,ch.selectedIndex-1);
+        ch.options[ch.selectedIndex]?.scrollIntoView({block:'nearest'});
+    }
+
+    if((e.key==='Enter' || e.key==='NumpadEnter') && document.activeElement===ch){
+        e.preventDefault();
+        ch.dispatchEvent(new Event('change'));
+    }
+});
+
+ch.addEventListener('focus',()=>{
+    if(ch.selectedIndex < 0 && ch.options.length){
+        ch.selectedIndex = 0;
+    }
+});
+
+document.getElementById('sidebar').addEventListener('click',()=>{document.getElementById('sidebar').classList.remove('collapsed');});
 
 function goHome(){
     window.location.href="home.html";
