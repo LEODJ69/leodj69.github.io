@@ -201,7 +201,7 @@ body{
 <script>
 
 const M3U_URL =
-'https://raw.githubusercontent.com/12081985EFRAIN/28122024/refs/heads/main/radiosbo.m3u';
+'https://raw.githubusercontent.com/12081985EFRAIN/28122024/main/radiosbo.m3u';
 
 const audio = document.getElementById('audio');
 const playlist = document.getElementById('playlist');
@@ -216,7 +216,7 @@ async function loadM3U(){
 
     try{
 
-        const response = await fetch(M3U_URL);
+        const response = await fetch(M3U_URL,{mode:'cors',cache:'no-store'});
         const text = await response.text();
 
         parseM3U(text);
@@ -224,7 +224,7 @@ async function loadM3U(){
     }catch(error){
 
         playlist.innerHTML =
-        '<div class="channel">Error cargando lista M3U</div>';
+        '<div class="channel">No se pudo cargar la lista. Verifique CORS/GitHub.</div>';
 
         console.error(error);
     }
@@ -322,7 +322,7 @@ function reconnect(){
 
     reconnectTimer=setTimeout(()=>{
 
-        if(currentUrl){
+        if(currentUrl){ audio.crossOrigin='anonymous';
 
             reconnectAttempts++;
             console.log('Reconectando intento', reconnectAttempts);
