@@ -16,16 +16,19 @@ body{background:linear-gradient(180deg,#050816,#081329,#050816);
 header{
     padding:25px;
     text-align:center;
+    letter-spacing:3px;
+    color:#00ffff;
     font-size:35px;
     font-weight:bold;
-    letter-spacing:2px;color:#00ffff;}
+    text-transform:uppercase;}
 .container{
     width:95%;
     max-width:1200px;
     margin:auto;
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:30px;padding-bottom:50px;}
+    gap:30px;
+    padding-bottom:50px;}
 .card{
     background:rgba(255,255,255,.05);
     border-radius:20px;
@@ -154,20 +157,7 @@ z-index:100;
 transition:.3s;}
 .cerrar:hover{
 opacity:.9;}
-header{
-    padding:25px;
-    text-align:center;
-    font-size:35px;
-    font-weight:bold;
-    letter-spacing:3px;
-    color:#00e5ff;
-    text-transform:uppercase;
-    text-shadow:
-        0 0 8px currentColor,
-        0 0 18px currentColor,
-        0 0 35px currentColor,
-        0 0 60px currentColor;
-    }
+
 </style>
 
 <!-- permite reproducir transmisiones HLS con javascript -->
@@ -176,6 +166,9 @@ header{
 <!-- ▼1er TITULO▼ -->
 <header>
 TVDEPORTE
+
+
+
 <!--▼reproductor media player interno▼-->
 </footer>
 <div id="visorPlayer" class="visor-overlay">
@@ -388,12 +381,6 @@ TVDEPORTE
 <div class="boton" onclick="window.open('iptv_player.html','_blank');">IPTV</div>
 </div>
 
-<!-- TARJETA 14 -->
-<div class="card">
-<div style="display: flex; justify-content: center; width: 100%;">
-<img src="LOGOS/radio.png" alt="Descripción de la imagen" style="width: auto; height: 150px; object-fit: cover;"></div>
-<div class="boton" onclick="window.open('radio_player.html','_blank');">RADIO ONLINE</div>
-
 </div>
 </div>
 <!-- ▼ pie de pagina y redes sociales ▼-->
@@ -401,9 +388,9 @@ TVDEPORTE
 <footer>
     <p>© 2026 TVDeporte v1.0 | Todos los derechos reservados</p>
 
-    <a href="https://facebook.com" target="_blank">Facebook</a> |
-    <a href="https://youtube.com" target="_blank">YouTube</a> |
-    <a href="https://telegram.org" target="_blank">Telegram</a>
+    <a href="https://facebook.com" class="card" target="_blank">Facebook</a> |
+    <a href="https://youtube.com" class="card" target="_blank">YouTube</a> |
+    <a href="https://telegram.org" class="card" target="_blank">Telegram</a>
 </footer>
 <!-- ▲ pie de pagina y redes sociales ▲-->
 
